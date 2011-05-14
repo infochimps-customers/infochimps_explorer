@@ -10,7 +10,6 @@ gem   'rack-test',   "~> 0.5.7"
 gem   'rack-flash',  "~> 0.1.1"
 gem   'rack-abstract-format',    "~> 0.9.9"
 gem   'rack-accept-media-types', "~> 0.9"
-gem   'unicorn',     "~> 3.4.0"
 
 gem   'haml',        "~> 3.0.25"
 gem   'tilt',        "~> 1.2.2"
@@ -27,6 +26,9 @@ group :development do
   gem 'jeweler',     "~> 1.5.2"
   gem 'rspec',       "~> 2.5.0"
   gem 'rcov',        ">= 0.9.9"
+  #
+  gem 'shotgun',     "~> 0.9"
+  gem 'thin',        "~> 1.2.11"
 end
 
 group :test do
