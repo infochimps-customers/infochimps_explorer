@@ -74,6 +74,7 @@ Gem::Specification.new do |s|
     "datasets/util/time/README.md",
     "datasets/util/time/chronic.icss.yaml",
     "datasets/web/analytics/traffic/cedexis.icss.yaml",
+    "infochimps_explorer.gemspec",
     "infochimps_explorer.rb",
     "lib/boot.rb",
     "lib/endpoint.rb",
