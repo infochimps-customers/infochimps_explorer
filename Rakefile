@@ -21,10 +21,7 @@ Jeweler::Tasks.new do |gem|
   gem.description = %Q{Documentation and Explorer for the Infochimps API}
   gem.email = "coders@infochimps.org"
   gem.authors = ["infochimps"]
-  # Include your dependencies below. Runtime dependencies are required when using your gem,
-  # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
-  #  gem.add_runtime_dependency 'jabber4r', '> 0.1'
-  #  gem.add_development_dependency 'rspec', '> 1.2.3'
+
 end
 Jeweler::RubygemsDotOrgTasks.new
 
