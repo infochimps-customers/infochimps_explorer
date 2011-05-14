@@ -1,0 +1,132 @@
+---
+namespace: encyclopedic.freebase
+protocol: topic
+
+code_assets:
+  - location:   code/topic_endpoint.rb
+    type:       apeyeye_endpoint
+      
+types:
+  - name: topic_list_params
+    type: record
+    doc: Query API parameters for the /encyclopedic/freebase/lists/topic/{freebase_type}/list call
+    fields:
+      - name:           _from
+        type:           int
+        doc:            >-
+          Integer offset to start @results@ at. A multiple of 100.
+        default:        0
+      - name:           freebase_type
+        type:           string
+        required:       true
+        doc: >-
+          The name of the Freebase type to query
+      - name:           _conditions
+        type:
+          type:         map
+          values:       string
+        default:        {}
+        doc: >-
+          The remaining parameters will be used as conditions on the query.
+            
+  - name: topic_list_response
+    type: record
+    doc:  A freeform hash of facts from the Freebase world encyclopedia
+    fields:
+      - name: results
+        doc:  An array of hashes of facts from the Freebase database
+        type:
+          type: array
+          items:
+            type: map
+            values: string            
+
+  - name: topic_show_params
+    type: record
+    doc: Query API parameters for the /encyclopedic/freebase/lists/topic/{freebase_type}/list call
+    fields:
+      - name:           freebase_type
+        type:           string
+        required:       true
+        example:        fashion/garment
+        doc: >-
+          The name of the Freebase type to query
+          
+      - name:           freebase_id
+        type:           string
+        required:       true
+        doc:            >-
+          String giving the freebase "Machine ID":http://wiki.freebase.com/wiki/Mid
+          for the requested topic. It has the form 'abc123', and must exist in
+          the set of topics for @freebase_type@
+          
+  - name: topic_show_response
+    type: record
+    doc:  A freeform hash contiaining the requested fact from the Freebase world encyclopedia
+    fields:
+      - name: result
+        doc:  The requested fact from the Freebase database
+        type:
+          type: map
+          items: string
+
+messages:
+  list:
+    doc: Returns a freeform hash of facts from the Freebase world encyclopedia for a given @freebase_type@
+    request:
+      - name: topic_list_params
+        type: topic_list_params
+    response: topic_list_response
+    samples:
+      - request:
+          - freebase_type:      fashion/garment
+          - specialization_of:  Coat
+      - url:    "/encyclopedic/freebase/topic/fashion/garment/list?"
+      - request:
+          - freebase_type:      fashion/garment
+      - url:    "/encyclopedic/freebase/topic/fashion/fashion_designer/list?_from=200"
+      - request:
+          - freebase_type:      fashion/fashion_designer
+            _from:              200
+      - url:    "/encyclopedic/freebase/topic/film/film/list?genre=Comedy&_from=100"
+      - request:
+          - freebase_type:      film/film
+            genre:              Comedy
+            _from:              100
+      - url:    "/encyclopedic/freebase/topic/film/film/list?name=Some+Like+it+hot"
+      - request:
+          - freebase_type:      film/film
+            name:               Some Like it hot
+      - request: []
+        error:                  RequestValidationError
+         
+
+  show:
+    doc: Returns a freeform hash of facts from the Freebase world encyclopedia for a given @freebase_type@ and @freebase_mid@
+    request:
+      - name: topic_show_params
+        type: topic_show_params
+    response: topic_show_response
+    samples:
+      # messages by 
+      - request:
+          - freebase_type:      film/film
+            freebase_id:        0k4f3
+      - url:  "/encyclopedic/freebase/topic/fashion/fashion_designer/m/02ptx2l?"
+      - request:
+          - freebase_type:      fashion/fashion_designer
+            freebase_id:        02ptx2l
+      - url:  "/encyclopedic/freebase/topic/film/film/m/0k4f3?"
+ 
+targets:
+  catalog:
+    - name: freebase_topic_list 
+      title: Freebase Topic List
+      description: Freebase wild card listings 
+      messages:
+        - list
+      tags:
+      - awesomeapi
+      - freebase
+      - huge
+

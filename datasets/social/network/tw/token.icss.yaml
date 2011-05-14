@@ -1,0 +1,143 @@
+---
+namespace: social.network.tw
+protocol: token
+
+messages:
+  word_stats:
+    request:
+      - name: token_params
+        type: token_params
+    response: word_statistics
+    doc: |-
+      Given a token (word or hashtag) returns its usage statistics on Twitter
+      
+  # wordbag:
+  #   request:
+  #     - name: user_params
+  #       type: user_params
+  #   response: user_word_bag
+  #   doc: |-
+  #     Given a twitter user identifier (one of their screen_name or user_id) returns
+  #     their most characteristic words.
+      
+targets:
+  catalog:
+    - name: word_stats_catalog_entry
+      title: Twitter Word Usage
+      messages:
+        - word_stats
+      tags:
+        - word
+        - token
+        - twitter
+        - api
+        - corpora
+        - linguistics
+      description: |-
+        Discover how commonly used a given word is on Twitter.
+
+        
+        There are two relevant metrics that describe a word’s usage. The first is simply a usage frequency, measured as a fraction of
+        the full corpus of text on Twitter in parts per billion. The second describes how dispersed the word’s usage is among all Twitter users.
+        As an example, the word “the” has a very high usage frequency while the word “tintinnabulation” has a very low usage frequency. As for
+        dispersion, consider the words “pajamas” and “lawsuit”, both of which have similar usage frequencies. Many, many people talk about pajamas
+        and so “pajamas” has high dispersion. Comparably few people talk about lawsuits and so “lawsuit” has low dispersion (these people must say
+        “lawsuit” a lot, though, in order to give it the same overall usage frequency as “pajamas”).
+types:
+
+  - name: token_params
+    type: record
+    doc: A single word.
+    fields:
+      - name: tok
+        type: string
+        default: dog
+        
+  - name: word_statistics
+    type: record
+    doc: Usage statistics for one queried token.
+    fields:
+      - name:   tok
+        type:   string
+        doc:    The token queried
+        
+      - name:   range
+        type:   float
+        doc:    range of this word (number of unique users who’ve used it), normalized to the number of users in the sample
+        
+      - name:   global_stdev_ppb
+        type:   float
+        doc:    standard deviation of the usage frequency of this word, expressed as parts per billion
+        
+      - name:   global_freq_ppb
+        type:   float
+        doc:    global usage frequency of this token, expressed as parts per billion
+
+      - name:   global_freq_avg
+        type:   float
+
+      - name:   global_freq_stdev
+        type:   float
+
+      - name:   user_freq_avg
+        type:   float
+
+      - name:   user_freq_stdev
+        type:   float
+
+      - name:   rel_freq_ppb
+        type:   float
+
+      - name:   dispersion
+        type:   float
+
+      - name:   total_usages
+        type:   int
+        
+  # - name: user_params
+  #   type: record
+  #   doc: One of a twitter user's screen_name or user_id
+  #   fields:
+  #     - name: screen_name
+  #       type: string
+  #       default: infochimps
+  #     - name: user_id
+  #       type: int
+  #
+  #
+  # - name: user_token_usage
+  #   type: record
+  #   doc: A json object containing information about a single user token usage
+  #   fields:
+  #     - name: tok
+  #       type: string
+  #       doc: The token in question
+  #     - name: rel_freq
+  #       type: float
+  #       doc: |-
+  #         Relative frequency, in parts-per-billion, at which the user used this token.
+  #         This is relative to average frequency at which this token is used by other
+  #         Twitter users.          
+  #     - name: user_freq_ppb
+  #       type: float
+  #       doc: |-
+  #         The frequency, in parts-per-billion, at which the user emits this token
+  #     
+  # - name: user_word_bag
+  #   type: record
+  #   doc: An json object containing a Twitter user's most characteristic words
+  #   fields:
+  #     - name: user_id
+  #       type: int
+  #       doc: Twitter user id
+  #     - name: total_usages
+  #       type: int
+  #       doc: Total number of token usages measured
+  #     - name: vocab
+  #       type: int
+  #       doc: Total number of unique token usages measured
+  #     - name: toks
+  #       doc: A json array of user token usages
+  #       type:
+  #         type: array
+  #         items: user_token_usage

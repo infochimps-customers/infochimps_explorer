@@ -1,0 +1,78 @@
+---
+namespace: social.network.tw
+protocol: graph
+
+messages:
+  strong_links:
+    request:
+      - name: user_request
+        type: user_request
+    response: stronglinks
+    doc: |-
+      Given a user identifier (one of user_id or screen_name) returns up to 100 of
+      their closest connections on Twitter
+
+targets:
+  catalog:
+    - name: twitter_graph_metrics_entry
+      title: "Twitter Graph Metrics: StrongLinks"
+      messages:
+        - strong_links
+      description: |-
+        Given a single twitter user identifier returns an array of up to 100 of their strongest connections.
+      tags:
+        - network
+        - social
+        - twitter
+        - pagerank
+        - socialnetwork
+        - ranking
+        - networking
+        - bigdata
+        - twitter-com
+        - trstrank
+        - reputation
+        - usergraph
+        - infochimps-api
+        - awesomeapi        
+types:
+  
+  - name: user_request
+    type: record
+    doc: One of a twitter user's screen_name or user_id
+    fields:
+      - name: screen_name
+        type: string
+        doc: A Twitter user's screen_name
+        default: infochimps
+      - name: user_id
+        type: int
+        doc: A Twitter user's user_id
+
+  - name: weighted_link
+    type: record
+    doc: A single weighted link
+    fields:
+      - name: user_id
+        type: int
+        doc: Twitter user id
+      - name: weight
+        type: float
+        doc: Weight of the link between the user queried and this user.
+          
+  - name: stronglinks
+    type: record
+    doc: An array of up to 100 of a Twitter user's strongest connections
+    fields:
+      - name: user_id
+        doc:  Twitter user id of the user queried
+        type: int
+      - name: screen_name
+        doc: Twitter screen name of the user queried
+        type: string
+      - name: strong_links
+        doc:  An array of weighted link (@user_id@, @weight@) pairs.
+        type:
+          type: array
+          items: weighted_link
+          

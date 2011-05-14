@@ -1,0 +1,433 @@
+---
+namespace: engineering.chemical.msds
+protocol: hazard_msds
+
+targets:
+  catalog:
+    - name: msds_catalog_entry
+      title: Material Safety Data Sheets
+      tags:
+        - chemical
+        - datasheet
+        - first-aid
+        - hazard
+        - health
+        - information
+        - material
+        - msds
+        - product
+        - safety
+        - awesomeapi
+      description: |-
+        Over 220,000 material safety data sheets for various products available for full text search.
+        Information includes chemical components, first aid measures, storage and handling, and more.      
+        Source(s):
+          Hazard.com
+      messages:
+        - msds_search
+        
+messages:
+  msds_search:
+    doc: Search any field in over 220,000 material safety data sheets.
+    request:
+      - name: msds_request_params
+        type: msds_request_params
+    response: sheet_response
+
+types:
+          
+  - name: msds_request_params
+    type: record
+    doc: Search request against the msds corpus.
+    fields:
+      - name: q
+        type: string
+        default: "msds_id.product_id:hammer"
+        doc: |-
+          The term to search for. You may use 'field:term' to search for that term in only a given field (or even 'field.subfield:term' if there are nested fields
+      - name: _from
+        type: int
+        doc: Integer offset to start @results@ at. A multiple of 100.
+        
+  - name: otherinfo_record
+    type: record
+    doc: Other information
+    fields:
+      - name: disclaimer
+        type: string
+        doc: |-
+          DISCLAIMER: (provided with this information by the compiling agencies)  This information is formulated for use by
+          elements of the Department  of Defense. The United States of America in no manner whatsoever,  expressly or implied,
+          warrants this information to be accurate and  disclaims all liability for its use. Any person utilizing this document
+          should seek competent professional advice to verify and assume responsibility for the suitability of this information
+          to their  particular situation.
+          
+  - name: chemical_properties_record
+    type: record
+    doc: Description of the chemical properties of this product
+    fields:
+      - name: specific_gravity
+        type: string
+        doc: |-
+          Ratio of the mass of a material to the mass of an equal volume of water at 4 oC (39 oF). Source: http://www.ilpi.com/msds/ref/density.html
+      - name: vapor_pressure
+        type: string
+        doc: Pressure exerted by its vapor when the liquid and vapor are in dynamic equilibrium
+      - name: appearance_and_odor
+        type: string
+        doc: Description of the appearance and odor of the chemical product
+      - name: evaporation_reference
+        type: string
+        doc: Rate at which this chemical product will evaporate compared with a known material
+      - name: corrosion_rate
+        type: string
+        doc: Rate at which this chemical product corrodes
+      - name: boiling_point
+        type: string
+        doc: Temperature at which this chemical product boils
+      - name: water_solubility
+        type: string
+        doc: Maximum amount of the chemical product which can be dissolved in a given solvent at a given temperature
+      - name: ph
+        type: string
+        doc: |-
+          pH indicates whether a solution is acidic, basic or neutral. The corresponding ranges are:
+            1. Acidic - the pH is between zero and 7.0
+            2. Neutral - the pH is 7.0
+            3. Basic (also called alkaline) - the pH is between 7.0 and 14.
+          Source: http://www.ilpi.com/msds/ref/ph.html
+      - name: percent_volatiles
+        type: string
+        doc: Percentage of the chemical product that will evaporate at 70 degrees fahrenheit
+      - name: melt_freeze_pt
+        type: string
+
+  - name: firefighting_measures_record
+    type: record
+    doc: Description of firefighting measures to take in case of fire.
+    fields:
+      - name: extinguishing_media
+        type: string
+        doc: Extinguishing media to use
+      - name: upper_limits
+        type: string
+        doc: |-
+          Upper Flammable Limit (UFL). Above the upper flammable limit the mixture of substance and air is too rich in fuel (deficient
+          in oxygen) to burn. This is sometimes called the upper explosive limit (UEL). Source: http://www.ilpi.com/msds/ref/flammablelimits.html
+      - name: lower_limits
+        type: string
+        doc: |-
+          Lower Flammable Limit (LFL). Below the lower flammable limit (LFL) the mixture of substance and air lacks sufficient fuel
+          (substance) to burn. This is sometimes called the lower explosive limit (LEL). Source: http://www.ilpi.com/msds/ref/flammablelimits.html
+      - name: flash_point
+        type: string
+        doc: |-
+          Flash point is the lowest temperature at which a liquid can form an ignitable mixture in air near the surface of the liquid.
+          The lower the flash point, the easier it is to ignite the material. Source: http://www.ilpi.com/msds/ref/flashpoint.html
+      - name: fire_hazard
+        type: string
+        doc: Description of how this chemical product presents a fire hazard
+      - name: flash_point_method
+        type: string
+        doc: |-
+          Flash points are determined experimentally by heating the liquid in a container and then introducing a small flame just above
+          the liquid surface. The temperature at which there is a flash/ignition is recorded as the flash point. Two general methods are
+          called closed-cup and open-cup. The closed-cup method prevents vapors from escaping and therefore usually results in a flash
+          point that is a few degrees lower than in an open cup. Because the two methods give different results, one must always list
+          the testing method when listing the flash point. Example: 110 oC (closed cup). Source: http://www.ilpi.com/msds/ref/flashpoint.html
+      - name: procedures
+        type: string
+        doc: Description of procedures fire fighters should undergo.
+      - name: autoignition_temp
+        type: string
+        doc: Temperature at or above which the chemical product might spontaneously ignite
+    
+  - name: disposal_record
+    type: record
+    doc: Disposal considerations to adhere to
+    fields:
+      - name: waste_disposal
+        type: string
+      
+  - name: transport_record
+    type: record
+    doc: Description of precautions to take and legalities involved with transporting the chemical product.
+    fields:
+      - name: transport_info
+        type: string
+
+  - name: hazards_record
+    type: record
+    doc: Top level description of hazards the chemical products creates.
+    fields:
+      - name: routes_of_entry
+        type: string
+        doc: Description of how the chemical product might enter the human body (eg. inhalation, ingestion)
+      - name: ld50_lc50_mix
+        type: string
+        doc: |-
+          An LC50 value is the concentration of a material in air that will kill 50% of the test subjects
+          (animals, typically mice or rats) when administered as a single exposure (typically 1 or 4 hours).
+          Also called the  median lethal concentration and lethal concentration 50, this value gives you an
+          idea of the relative acute toxicity of an inhalable material. This is closely related to the LCLo
+          value which is the lowest concentration reported to have killed animals or humans. This value applies
+          to vapors, dusts, mists and gases. Solids and liquids use the closely related LD50 value
+          (50% lethal dose). Source: http://www.ilpi.com/msds/ref/lc50.html
+
+          An LD50 value is the amount of a solid or liquid material that it takes to kill 50% of test animals
+          (for example, mice or rats) in one dose. This is closely related to the LDLo value which is the lowest
+          dosage reported to have killed animals or humans. LC50 (50% lethal concentration) is a related term
+          used for gases, dusts, vapors, mists etc. Source: http://www.ilpi.com/msds/ref/ld50.html
+      - name: health_hazards
+        type: string
+        doc: Description of health hazards this chemical product can cause. Closely associated with the routes_of_entry
+      - name: overexposure_effects
+        type: string
+        doc: Description of the effects of overexposure
+      - name: aggravates_medical
+        type: string
+        doc: Describes if and how the chemical product aggrevates existing medical conditions
+      - name: carcinogenic
+        type: string
+        doc: |-
+          Lists one or more independent sources (eg. NTP, IARC, and OSHA) and whether or not these sources tested the chemical
+          product to be carcinogenic.
+      - name: carcinogenic_expl
+        type: string
+        doc: A description of why the product is labeled carcinogenic, otherwise 'none'
+
+  - name: storage_and_handling_record
+    type: record
+    doc: Description of procedures for storage and handling of the chemical product
+    fields:
+      - name: handling_and_storage
+        type: string
+        doc: Storage and handling procedures
+      - name: precautions
+        type: string
+        doc: Storage and handling precautions to take
+        
+  - name: contractor_record
+    type: record
+    doc: Contractor for the msds
+    fields:
+      - name: zip_code
+        type: string
+        doc: Zip code of contractor
+      - name: company_name
+        type: string
+        doc: Company name of contractor
+      - name: address
+        type: string
+        doc: Address of contractor
+      - name: state
+        type: string
+        doc: Two letter state abbreviation of contractor
+      - name: box
+        type: string
+      - name: country
+        type: string
+        doc: Two letter country code for the contractor
+      - name: city
+        type: string
+        doc: City name for the contractor
+
+  - name: msds_id_record
+    type: record
+    doc: Contains fields describing this msds in particular and what makes it unique.
+    fields:
+      - name: status_code
+        type: string
+      - name: msds_number
+        type: string
+        doc: Unique identifier for this msds
+      - name: product_id
+        type: string
+        doc: A short string title that is descriptive of the product, eg. "SEMI-GLOSS INTERIOR LATEX WHITE"
+      - name: msds_date
+        type: string
+        doc: Date this msds was created. (YYYYMMdd)
+      - name: fsc
+        type: string
+        doc: Federal Supply Class Code
+      - name: niin
+        type: string
+        doc: National Item Identification Number
+
+  - name: personal_protection_record
+    type: record
+    doc: Description of personal protection equipment
+    fields:
+      - name: ventilation
+        type: string
+        doc: Describes ventilation required in the space where product is handled      
+      - name: hygienic_practice
+        type: string
+        doc: Hygienic practices to adhere to when handling chemical product
+      - name: overexposure_effects
+        type: string
+        doc: Describes effects of overexposure, if any        
+      - name: supplemental
+        type: string
+        doc: Suplemental information
+      - name: respiratory_protection
+        type: string
+        doc: Describes respiratory protection required
+      - name: other_equipment
+        type: string
+        doc: Describes other protective equipment required
+      - name: protective_gloves
+        type: string
+        doc: Desribes whether protective gloves are needed or not
+      - name: eye_protection
+        type: string
+        doc: Describes eye protection required
+        
+  - name: accidental_release_record
+    type: record
+    doc: Measures to adhere to in case of accidental release of chemical product.
+    fields:
+      - name: spill_procedures
+        type: string
+        doc: Procedures to follow in case of spill
+      - name: neutralizing_agent
+        type: string
+        doc: Neutralizing agent, if any, for the chemical product
+      
+  - name: ingredient
+    type: record
+    doc: A single ingredient
+    fields:
+      - name: other_rec_limits
+        type: string
+      - name: ingredient_name
+        type: string
+        doc: Common name of the ingredient (these are not normalized in any way)
+      - name: percent_by_weight
+        type: string
+        doc: |-
+          What percentage of the chemical product, by weight, does this ingredient constitute?
+          While this field should be a floating point it is not normalized and contains many
+          extra characters such as %.
+      - name: cas
+        type: string
+      - name: dot_rpt_qty
+        type: string
+      - name: epa_rpt_qty
+        type: string
+      - name: acgih_tlv
+        type: string
+        doc: Threshhold safety value from the American Conference of Governmental Industrial Hygienists
+      - name: rtecs_num
+        type: string
+        doc: Reference number in the Registry of Toxic Effects of Chemical Substances (RTECS) database
+      - name: osha_pel
+        type: string
+
+  - name: first_aid_record
+    type: record
+    doc: First aid measures in case of exposure to the chemical product
+    fields:
+      - name: first_aid
+        type: string
+        doc: Describes first aid measures
+        
+  - name: stability_and_reactivity_record
+    type: record
+    doc: Describes the stability and reactivity level of the chemical product at a high level.
+    fields:
+      - name: avoid
+        type: string
+        doc: Stability conditions to avoid
+      - name: hazardous_products
+        type: string
+        doc: Hazardous decomposition products
+
+  - name: responsible_party_record
+    type: record
+    doc: |-
+      Describes what party (usually a contact at a company) is responsible for the product along with
+      contact information.
+    fields:
+      - name: emergency_phone
+        type: string
+        doc: Phone number to call in case of emergency regarding the chemical product
+      - name: zip_code
+        type: string
+        doc: Contact zip code        
+      - name: company_name
+        type: string
+        doc: Responsible company
+      - name: address
+        type: string
+        doc: Contact address
+      - name: state
+        type: string
+        doc: Two letter abbreviation for contact state
+      - name: preparer_name
+        type: string
+        doc: Preparer of the msds
+      - name: info_phone
+        type: string
+        doc: Phone number to call for information about the chemical product
+      - name: box
+        type: string
+      - name: city
+        type: string
+        doc: Contact city
+      - name: country
+        type: string
+        doc: Contact country
+        
+  - name: sheet
+    type: record
+    doc: A material safety data sheet (MSDS).
+    fields:
+      - name: msds_id
+        type: msds_id_record
+      - name: hazards
+        type: hazards_record
+      - name: stabilityreactivity
+        type: stability_and_reactivity_record
+      - name: responsible
+        type: responsible_party_record
+      - name: firstaid
+        type: first_aid_record
+      - name: ingredients
+        doc: |-
+          A list of chemical ingredients. This list is not comprehensive and is often empty
+          when the chemical product contains no hazardous ingredients.
+        type:
+          type:  array
+          items: ingredient
+      - name: accidentalrelease
+        type: accidental_release_record
+      - name: personalprotection
+        type: personal_protection_record
+      - name: disposal
+        type: disposal_record
+      - name: chemicalproperties
+        type: chemical_properties_record
+      - name: storagehandling
+        type: storage_and_handling_record
+      - name: contractor
+        type: contractor_record
+      - name: firefighting
+        type: firefighting_measures_record
+      - name: transport
+        type: transport_record
+      - name: otherinfo
+        type: otherinfo_record
+
+  - name: sheet_response
+    type: record
+    doc: A json object containing the total number of documents that matched the search as well as an array of @results@.
+    fields:
+      - name: total
+        type: int
+        doc: Total number of sheets that match @q@
+      - name: results
+        doc: A json array of sheets matching @q@
+        type:
+          type: array
+          items: sheet

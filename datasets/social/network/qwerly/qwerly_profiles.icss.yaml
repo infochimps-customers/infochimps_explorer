@@ -1,0 +1,399 @@
+--- 
+namespace: social.network.qwerly
+protocol: qwerly_profiles
+
+messages: 
+  profile_search:
+    doc: Search social network profiles.
+    response: qwerly_response
+    request: 
+    - name: qwerly_params
+      type: qwerly_params
+
+targets: 
+  catalog: 
+  - name: qwerly_profiles
+    messages: 
+    - profile_search
+    title: Qwerly Profile Search
+    tags: 
+      - awesome
+      - data
+      - qwerly
+      - social
+      - network
+      - api
+      - profile
+      - aboutme
+      - amazon
+      - amplify
+      - audioboo
+      - bambuser
+      - bebo
+      - behance
+      - blip
+      - blip_pl
+      - blogger
+      - booklog
+      - brightkite
+      - crunchbase
+      - dailybooth
+      - delicious
+      - deviantart
+      - digg
+      - diigo
+      - disqus
+      - dopplr
+      - douban
+      - dribbble
+      - ember
+      - etsy
+      - facebook
+      - favstar
+      - flavors
+      - flickr
+      - flixster
+      - formspring
+      - forrst
+      - foursquare
+      - friendfeed
+      - github
+      - gitorious
+      - goldenline
+      - google_profiles
+      - google_reader
+      - gowalla
+      - gravatar
+      - grooveshark
+      - hatena
+      - identica
+      - ilike
+      - jaiku
+      - klout
+      - krop
+      - lanyrd
+      - lastfm
+      - librarything
+      - linkedin
+      - livejournal
+      - meadiciona
+      - meme
+      - mister_wong
+      - mixi
+      - movapic
+      - mynameise
+      - myspace
+      - netlog
+      - netvibes
+      - newsvine
+      - ohloh
+      - orkut
+      - other
+      - pandora
+      - paper_li
+      - peerindex
+      - picasa
+      - plancast
+      - plaxo
+      - plixi
+      - posterous
+      - qik
+      - quora
+      - qype
+      - readernaut
+      - reddit
+      - retaggr
+      - runkeeper
+      - scribd
+      - slideshare
+      - smart_fm
+      - soundcloud
+      - soup_io
+      - spotify
+      - stack_overflow
+      - steam_community
+      - stumbleupon
+      - svpply
+      - technorati
+      - tripadvisor
+      - tumblr
+      - tweetranking
+      - twitpic
+      - twitter
+      - ustream
+      - vimeo
+      - wakoopa
+      - wordpress
+      - xing
+      - yahoo_pulse
+      - yahoo_upcoming
+      - yelp
+      - youtube
+    description: Search through qwerly data by screen name for social networking sites.
+
+types:
+
+  - name: qwerly_params
+    type: record
+    doc: Parameters for the Qwerly Profile Search     
+    fields: 
+      - name: q
+        type: string
+        default: "twitter.screen_name:infochimps"
+        doc: |-
+          The term to search for. You may use 'field:term' to search for that term in only a given field (or even 'field.subfield:term' if there are nested fields
+
+  - name: social_network_record
+    type: record
+    fields: 
+      - name: screen_name
+        type: string
+        doc: User's handle with the social network in question.
+      - name: url
+        type: string
+        doc: Url to user's profile
+
+  - name: qwerly_record
+    type: record
+    docs: Qwerly data (pulled from Twitter) that includes screen name, a brief description, a location and a name.
+    fields: 
+    - name: screen_name
+      type: string
+    - name: name
+      type: string
+    - name: description
+      type: string
+    - name: location
+      type: string
+    - name: website
+      type: string
+
+  - name: social_network_profile
+    type: record
+    fields: 
+      - name: qwerly
+        type: qwerly_record
+      - name: aboutme
+        type: social_network_record
+      - name: amazon
+        type: social_network_record
+      - name: amplify
+        type: social_network_record
+      - name: audioboo
+        type: social_network_record
+      - name: bambuser
+        type: social_network_record
+      - name: bebo
+        type: social_network_record
+      - name: behance
+        type: social_network_record
+      - name: blip
+        type: social_network_record
+      - name: blip_pl
+        type: social_network_record
+      - name: blogger
+        type: social_network_record
+      - name: booklog
+        type: social_network_record
+      - name: brightkite
+        type: social_network_record
+      - name: crunchbase
+        type: social_network_record
+      - name: dailybooth
+        type: social_network_record
+      - name: delicious
+        type: social_network_record
+      - name: deviantart
+        type: social_network_record
+      - name: digg
+        type: social_network_record
+      - name: diigo
+        type: social_network_record
+      - name: disqus
+        type: social_network_record
+      - name: dopplr
+        type: social_network_record
+      - name: douban
+        type: social_network_record
+      - name: dribbble
+        type: social_network_record
+      - name: ember
+        type: social_network_record
+      - name: etsy
+        type: social_network_record
+      - name: facebook
+        type: social_network_record
+      - name: favstar
+        type: social_network_record
+      - name: flavors
+        type: social_network_record
+      - name: flickr
+        type: social_network_record
+      - name: flixster
+        type: social_network_record
+      - name: formspring
+        type: social_network_record
+      - name: forrst
+        type: social_network_record
+      - name: foursquare
+        type: social_network_record
+      - name: friendfeed
+        type: social_network_record
+      - name: github
+        type: social_network_record
+      - name: gitorious
+        type: social_network_record
+      - name: goldenline
+        type: social_network_record
+      - name: google_profiles
+        type: social_network_record
+      - name: google_reader
+        type: social_network_record
+      - name: gowalla
+        type: social_network_record
+      - name: gravatar
+        type: social_network_record
+      - name: grooveshark
+        type: social_network_record
+      - name: hatena
+        type: social_network_record
+      - name: identica
+        type: social_network_record
+      - name: ilike
+        type: social_network_record
+      - name: jaiku
+        type: social_network_record
+      - name: klout
+        type: social_network_record
+      - name: krop
+        type: social_network_record
+      - name: lanyrd
+        type: social_network_record
+      - name: lastfm
+        type: social_network_record
+      - name: librarything
+        type: social_network_record
+      - name: linkedin
+        type: social_network_record
+      - name: livejournal
+        type: social_network_record
+      - name: meadiciona
+        type: social_network_record
+      - name: meme
+        type: social_network_record
+      - name: mister_wong
+        type: social_network_record
+      - name: mixi
+        type: social_network_record
+      - name: movapic
+        type: social_network_record
+      - name: mynameise
+        type: social_network_record
+      - name: myspace
+        type: social_network_record
+      - name: netlog
+        type: social_network_record
+      - name: netvibes
+        type: social_network_record
+      - name: newsvine
+        type: social_network_record
+      - name: ohloh
+        type: social_network_record
+      - name: orkut
+        type: social_network_record
+      - name: other
+        type: social_network_record
+      - name: pandora
+        type: social_network_record
+      - name: paper_li
+        type: social_network_record
+      - name: peerindex
+        type: social_network_record
+      - name: picasa
+        type: social_network_record
+      - name: plancast
+        type: social_network_record
+      - name: plaxo
+        type: social_network_record
+      - name: plixi
+        type: social_network_record
+      - name: posterous
+        type: social_network_record
+      - name: qik
+        type: social_network_record
+      - name: quora
+        type: social_network_record
+      - name: qype
+        type: social_network_record
+      - name: readernaut
+        type: social_network_record
+      - name: reddit
+        type: social_network_record
+      - name: retaggr
+        type: social_network_record
+      - name: runkeeper
+        type: social_network_record
+      - name: scribd
+        type: social_network_record
+      - name: slideshare
+        type: social_network_record
+      - name: smart_fm
+        type: social_network_record
+      - name: soundcloud
+        type: social_network_record
+      - name: soup_io
+        type: social_network_record
+      - name: spotify
+        type: social_network_record
+      - name: stack_overflow
+        type: social_network_record
+      - name: steam_community
+        type: social_network_record
+      - name: stumbleupon
+        type: social_network_record
+      - name: svpply
+        type: social_network_record
+      - name: technorati
+        type: social_network_record
+      - name: tripadvisor
+        type: social_network_record
+      - name: tumblr
+        type: social_network_record
+      - name: tweetranking
+        type: social_network_record
+      - name: twitpic
+        type: social_network_record
+      - name: twitter
+        type: social_network_record
+      - name: ustream
+        type: social_network_record
+      - name: vimeo
+        type: social_network_record
+      - name: wakoopa
+        type: social_network_record
+      - name: wordpress
+        type: social_network_record
+      - name: xing
+        type: social_network_record
+      - name: yahoo_pulse
+        type: social_network_record
+      - name: yahoo_upcoming
+        type: social_network_record
+      - name: yelp
+        type: social_network_record
+      - name: youtube
+        type: social_network_record
+
+  - name: qwerly_response
+    doc: A json hash of social network profiles containing urls and screen names for each result.
+    type: record
+    fields: 
+      - name: total
+        type: int
+        doc: The total number of profiles that match query.
+      - name: results
+        doc: A json array of profile objects. Each one contains a @screen_name@ from the social network the correspond to and other information.
+        type:
+          type: array
+          items: social_network_profile
+

@@ -1,0 +1,134 @@
+---
+namespace: geo.location.infochimps
+protocol: auto_nav_data
+
+messages:
+  places:
+    doc: >-
+      Returns sorted pages of 'entities' within a geo location specified by a (lng,lat) pair and a resolution.
+    request:
+      - name: geo_search_request
+        type: geo_search_request
+    response: geojson_feature_collection
+
+  paths:
+    doc: >-
+      Returns sorted pages of 'entities' within a geo location specified by a (lng,lat) pair and a resolution.
+    request:
+      - name: geo_search_request
+        type: geo_search_request
+    response: geojson_feature_collection
+
+code_assets:
+  - name: auto_nav_data_endpoint
+    location: code/auto_nav_data_endpoint.rb
+
+data_assets:
+  - name: auto_nav_data_asset
+    type: geo_index_format
+    location: data/vector_map_geojson
+  - name: auto_nav_data_paths_asset
+    type: geo_index_format
+    location: data/vector_map_path_geojson
+    
+
+targets:
+  apeyeye:
+    - code_assets:
+        - auto_nav_data_endpoint
+        
+  geo_index:
+    - table_name: geo_location_infochimps_place
+      min_zoom: 4
+      max_zoom: 7
+      chars_per_page: 10000
+      sort_field: country
+      data_assets:
+        - auto_nav_data_asset
+        
+    - table_name: geo_location_infochimps_path
+      min_zoom: 5
+      max_zoom: 9
+      chars_per_page: 10000
+      sort_field: country
+      data_assets:
+        - auto_nav_data_paths_asset
+            
+types:
+
+  - name: geo_search_request
+    type: record
+    doc: A search request against geonames places
+    fields:
+      - name: category
+        type: string
+        doc: The Infochimps category of the entities to find
+      - name: lng
+        type: float
+        doc: The longitude (x coordinate) to search near
+      - name: lat
+        type: float
+        doc: The latitude (y coordinate) to search near
+      - name: zoom
+        type: int
+        doc: >-
+          The resolution of map tile to return, ranges from 1 to 13 with 1 being the lowest and 13
+          being the highest.
+      - name: _limit
+        type: int
+        doc: An integer limit to the number of pages returned
+      - name: _from
+        type: int
+        doc: Integer offset to start results at. A multiple of 10.          
+
+  - name: geojson_geometry
+    type: record
+    doc: A geoJSON geometry
+    fields:
+      - name: coordinates
+        doc: A (possibly) nested array whose schema depends on @type@
+        type:
+          type: array
+          items: float
+      - name: type
+        type: string
+        doc: One of [Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon]
+      
+  - name: geojson_feature
+    type: record
+    doc: A geoJSON feature
+    fields:
+      - name: type
+        type: string
+        doc: Always "Feature" meaning this object is a valid geoJSON feature
+      - name: geometry
+        type: geojson_geometry
+      - name: properties
+        doc: An arbitrary set of key values describing this particular feature
+        type:
+          type: map
+          values: string
+          
+  - name: geojson_feature_collection
+    type: record
+    doc: >-
+      A sorted list of @features@ in the geo location. This list is a valid geoJSON 'FeatureCollection'.
+    fields:
+      - name: type
+        type: string
+        doc: Always "FeatureCollection" meaning this object is a valid geoJSON feature collection
+      - name: features
+        type:
+          type: array
+          items: geojson_feature
+          
+  - name: geo_index_format
+    type: record
+    doc: An intermediate format required for storing into the geo index
+    fields:
+      - name: row_path
+        type: string
+        doc: category + '.' + source for the geo data
+      - name: geojson_blob
+        type: string
+        doc: A valid geojson "Feature"

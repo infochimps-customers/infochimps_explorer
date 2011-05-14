@@ -1,0 +1,82 @@
+--- 
+messages: 
+  vector_map: 
+    response: vector_map_record
+    doc: Query on a location to get back vector map data from Automotive Navigation Data.
+    request: 
+    - name: vector_map_request
+      type: vector_map_request
+namespace: geo.location.map
+code_assets: 
+- name: vector_map
+  location: code/auto_nav_data_endpoint.rb
+protocol: auto_nav_data
+targets: 
+  catalog: 
+  - name: vector_maps_and
+    messages: 
+    - vector_map
+    title: Vector Maps from Automotive Navigation Data
+    tags: 
+    - geo
+    - and
+    - automotive
+    - navigate
+    - navigation
+    - direction
+    - directions
+    - data
+    - vector
+    - vectors
+    - map
+    - maps
+    - location
+    - locations
+    description: |-
+      Map data constructed from shapefiles from Automotive Navigation Data(AND.com).
+      AND is a leading provider of digital mapping data used for navigation and location-based services.
+      AND focuses on the development of digital mapping data in Europe, North-Africa, Central and South America and Australia.
+      The digital maps are used in personal and 'in-car' navigation, Internet-based mapping, fleet management and more.
+      Our API allows you to search against this data by location, returning a vector map and other locationary data as a result.
+  apeyeye: 
+  - code_assets: 
+    - vector_map
+types: 
+  - name: vector_map_request
+    doc: Query api parameters for the vector_map message
+    fields: 
+    - name: q
+      type: string
+    type: record
+  - name: point
+    doc: A pair of x(longitude) and y(latitude) values corresponding to a geographical point
+    fields: 
+      - name: longitude
+        type: float
+      - name: latitude
+        type: float
+    type: record
+  - name: vector_map_record
+    doc: This will be filled in later with more detail.
+    fields: 
+      - name: asset_name
+        doc: The name of the location searched on
+        type: string
+      - name: zip_code
+        doc: The zip code for the associated location
+        type: int
+      - name: type_code
+        doc: The category for the associated location
+        type: string
+      - name: region
+        doc: The name of the region that encompasses the associated location represented as Region_name;Abbr.
+        type: string
+      - name: country
+        doc: The country the associated location is in represented as Country_name;Abbr.
+        type: string
+      - name: vector_map
+        doc: The array of x and y coordinates for the vector map
+        type:
+          type: array      
+          items: point
+    type: record

@@ -1,0 +1,79 @@
+GIT
+  remote: https://github.com/infochimps/icss.git
+  revision: da034a69f3d45b9b1f4dfe2a81e4e7a8a582d074
+  branch: with_gorillib
+  specs:
+    icss (0.0.2)
+      gorillib (~> 0.0.4)
+      yajl-ruby (~> 0.8.2)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    RedCloth (4.2.7)
+    addressable (2.2.6)
+    configliere (0.3.4)
+    diff-lcs (1.1.2)
+    git (1.2.5)
+    gorillib (0.0.7)
+    haml (3.0.25)
+    jeweler (1.5.2)
+      bundler (~> 1.0.0)
+      git (>= 1.2.5)
+      rake
+    kgio (2.4.0)
+    rack (1.2.2)
+    rack-abstract-format (0.9.9)
+    rack-accept-media-types (0.9)
+    rack-flash (0.1.1)
+      rack
+    rack-test (0.5.7)
+      rack (>= 1.0)
+    rake (0.8.7)
+    rcov (0.9.9)
+    rspec (2.5.0)
+      rspec-core (~> 2.5.0)
+      rspec-expectations (~> 2.5.0)
+      rspec-mocks (~> 2.5.0)
+    rspec-core (2.5.2)
+    rspec-expectations (2.5.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.5.0)
+    sinatra (1.1.4)
+      rack (~> 1.1)
+      tilt (>= 1.2.2, < 2.0)
+    spork (0.9.0.rc7)
+    tilt (1.2.2)
+    unicorn (3.4.0)
+      kgio (~> 2.2)
+      rack
+    watchr (0.7)
+    yajl-ruby (0.8.2)
+    yard (0.6.8)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  RedCloth (~> 4.2.4)
+  addressable (~> 2.2.6)
+  bundler (~> 1.0.12)
+  configliere (~> 0.3.2)
+  gorillib (~> 0.0.4)
+  haml (~> 3.0.25)
+  icss!
+  jeweler (~> 1.5.2)
+  rack (~> 1.2.1)
+  rack-abstract-format (~> 0.9.9)
+  rack-accept-media-types (~> 0.9)
+  rack-flash (~> 0.1.1)
+  rack-test (~> 0.5.7)
+  rcov (>= 0.9.9)
+  rspec (~> 2.5.0)
+  sinatra (~> 1.1.2)
+  spork (~> 0.9.0.rc5)
+  tilt (~> 1.2.2)
+  unicorn (~> 3.4.0)
+  watchr
+  yajl-ruby (~> 0.8.2)
+  yard (~> 0.6.7)

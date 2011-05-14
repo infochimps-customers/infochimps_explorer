@@ -1,0 +1,102 @@
+--- 
+namespace: science.astronomy.seti
+protocol: nuforc
+
+targets:  
+  catalog: 
+    - name: ufo_sightings
+      title: 60,000+ Documented UFO Sightings With Text Descriptions And Metadata
+      description: |-
+
+        Search accounts of UFO sightings from the National UFO Reporting Center.
+
+      
+        Data is from a comprehensive listing of over 60,000 unidentified-flying-object (UFO) sightings in the United States (and some elsewhere).
+        Fields of particular interest are the shape, which describes the shape of the UFO encountered as well as the description
+        which is free-form descriptive text about the event.
+        
+      tags:
+        - awesomeapi
+        - alien
+        - aliens
+        - awesome
+        - database
+        - ET
+        - extra-terrestrial
+        - flying
+        - ship
+        - sighting
+        - space
+        - tsv
+        - ufo
+        - unidentified-flying-objec
+      messages: 
+        - ufo_sightings_search
+        
+messages:
+  
+  ufo_sightings_search: 
+    request: 
+      - name: ufo_sightings_params
+        type: ufo_sightings_params
+    response: ufo_sightings_response
+    doc: Search ufo sightings.
+    
+types: 
+  - name: ufo_sightings_params
+    type: record
+    fields:
+      - name: q
+        type: string
+        default: "description:ufo"
+        doc: |-
+          The term to search for. You may use 'field:term' to search for that term in only a given field (or even 'field.subfield:term' if there are nested fields
+      - name: _from
+        type: int
+        default: "0"
+        doc: Integer offset to start @results@ at. A multiple of 100.
+
+        
+  - name: ufo_sightings
+    type: record
+    doc: |-
+      A comprehensive listing of over 60,000 unidentified-flying-object (UFO) sightings in the United States (and some elsewhere).
+      Fields of particular interest are the shape, which describes the shape of the UFO encountered as well as the description
+      which is free-form descriptive text about the event.
+    fields: 
+      - name: sighted_at
+        type: string
+        doc: Date ufo sighting occurred (YYYYMMdd)
+      - name: reported_at
+        type: string
+        doc: Date ufo sighting was reported (YYYYMMdd)
+      - name: location
+        type: string
+        doc: City and two letter state abbreviation sighting occurred in (City, State)
+      - name: shape
+        type: string
+        doc: |-
+          Shape of the ufo. One of [changed, changing, chevron, cigar, circle, cone, crescent, cross, cylinder, delta, diamond,
+          disk, dome, egg, fireball, flare, flash, formation, hexagon, light, other, pyramid, rectangle, round, sphere, teardrop,
+          triangle, unknown]
+      - name: duration
+        type: string
+        doc: Human entered duration, eg. 2 min.
+      - name: description
+        type: string
+        doc: Full text description of the sighting.
+        
+  - name: ufo_sightings_response
+    type: record
+    doc: A json hash of responses matching the passed in query string
+    fields: 
+      - name: total
+        type: int
+        doc: Total number of results
+      - name: results
+        type:
+          type:  array
+          items: ufo_sightings
+        doc: |-
+          A json array of ufo_sighting records. These records have the following schema.
+          

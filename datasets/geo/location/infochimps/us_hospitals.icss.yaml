@@ -1,0 +1,123 @@
+--- 
+messages: 
+  places: 
+    price_per_k_in_cents: 800
+    response: geojson_feature_collection
+    doc: Returns sorted pages of US hospitals within a geo location specified by a (lng,lat) pair and a resolution.
+    request: 
+    - name: us_hospitals_search_request
+      type: us_hospitals_search_request
+    initial_free_qty: 5000
+data_assets: 
+- name: us_hospitals_data_asset
+  location: us_hospitals_data.tsv
+  type: geo_index_format
+namespace: geo.location.infochimps
+code_assets: 
+- name: us_hospitals_endpoint
+  location: code/us_hospitals_endpoint.rb
+protocol: us_hospitals
+targets: 
+  geo_index: 
+  - data_assets: 
+    - us_hospitals_data_asset
+    min_zoom: 5
+    sort_field: -1
+    max_zoom: 10
+    chars_per_page: 10000
+    table_name: geo_location_infochimps_place
+  catalog: 
+  - name: us_hospitals_catalog
+    messages: 
+    - places
+    title: 5,090 US Hospital Locations
+    tags: 
+    - places
+    - names
+    - geo
+    - location
+    - latitude
+    - longitude
+    - health
+    - hospitals
+    - medicine
+    - emergency
+    description: |-
+      A list of 5,090 hospitals in the US, with coordinates, name, street address, city, state, postal code, and phone number.
+      
+      h3.  US Hospitals is a premium API, and requires a Brass Monkey subscription or higher.
+      
+      h3.  Calls are $8 per 1,000, but your first 1,000 calls to this API endpoint are free.
+  apeyeye: 
+  - code_assets: 
+    - us_hospitals_endpoint
+types: 
+- name: us_hospitals_search_request
+  doc: A search request against geonames places
+  fields: 
+  - name: lng
+    doc: The longitude (x coordinate) to search near
+    default: -97.7427778
+    type: float
+  - name: lat
+    doc: The latitude (y coordinate) to search near
+    default: 30.2669444
+    type: float
+  - name: zoom
+    doc: The resolution of map tile to return, ranges from 1 to 13 with 1 being the lowest and 13 being the highest.
+    default: 5
+    type: int
+  - name: _limit
+    doc: An integer limit to the number of pages returned
+    type: int
+  - name: _from
+    doc: Integer offset to start results at. A multiple of 10.
+    type: int
+  type: record
+- name: geo_index_format
+  doc: An intermediate format required for storing into the geo index
+  fields: 
+  - name: row_path
+    doc: category + . + source for the geo data
+    type: string
+  - name: geojson_blob
+    doc: A valid geojson Feature
+    type: string
+  type: record
+- name: geojson_geometry
+  doc: A geoJSON geometry
+  fields: 
+  - name: coordinates
+    doc: A (possibly) nested array whose schema depends on @type@
+    type: 
+      items: float
+      type: array
+  - name: type
+    doc: One of [Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon]
+    type: string
+  type: record
+- name: geojson_feature
+  doc: A geoJSON feature
+  fields: 
+  - name: type
+    doc: Always Feature, meaning this object is a valid geoJSON feature
+    type: string
+  - name: geometry
+    type: geojson_geometry
+  - name: properties
+    doc: An arbitrary set of key values describing this particular feature
+    type: 
+      values: string
+      type: map
+  type: record
+- name: geojson_feature_collection
+  doc: A sorted list of @features@ in the geo location. This list is a valid geoJSON FeatureCollection.
+  fields: 
+  - name: type
+    doc: Always FeatureCollection meaning this object is a valid geoJSON feature collection
+    type: string
+  - name: features
+    type: 
+      items: geojson_feature
+      type: array
+  type: record

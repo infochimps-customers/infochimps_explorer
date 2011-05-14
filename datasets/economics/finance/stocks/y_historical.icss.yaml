@@ -1,0 +1,121 @@
+---
+ 
+namespace: economics.finance.stocks
+protocol: y_historical
+
+targets:
+  catalog:
+    - name: y_historical
+      messages:
+        - daily_prices
+        - price_range
+      title: Yahoo Stock Search
+      description: |-
+        This dataset consists of historical stock price data extracted from Yahoo Finance using the "ichart":http://ichart.finance.yahoo.com service.
+        The selection of stock symbols is gathered from nasdaq.com.
+      tags:
+        - awesome
+        - data
+        - money
+        - finance
+        - yahoo
+        - stock
+        - stocks
+        - amex
+        - nyse
+        - nasdaq
+
+messages:
+  
+  daily_prices:
+    doc: Returns daily stock price information for a given stock symbol and date.
+    request:
+    - name: daily_prices_params
+      type: daily_prices_params
+    response: daily_prices_response
+    
+  price_range:
+    doc: Returns an array of daily price information from a start date to an end date.
+    request:
+    - name: price_range_params
+      type: price_range_params
+    response: price_range_response      
+
+types:
+  - name: daily_prices_response
+    type: record
+    doc: Daily stock price information for a given exchange, stock symbol, and date.
+    fields:    
+      - name: exchange
+        type: string
+        doc: Exchange on which this stock is traded
+      - name: symbol
+        type: string
+        doc: Symbol for this stock
+      - name: date
+        type: int
+        doc: The date, formatted as YYYYMMdd
+      - name: open
+        type: float
+        doc: Opening price of this stock
+      - name: close
+        type: float
+        doc: Closing price of this stock
+      - name: adj_close
+        type: float
+        doc: Adjusted Closing Price
+      - name: low
+        type: float
+        doc: Lowest price of this stock sold on @date@
+      - name: high
+        type: float
+        doc: Highest price of this stock sold on @date@
+      - name: volume
+        type: int
+        doc: Number of shares sold on this day in units of 1000
+  
+  - name: daily_prices_params
+    type: record
+    doc: A single string stock symbol and a date.
+    fields:
+      - name: symbol
+        type: string
+        default: AAPL
+        doc: The symbol for this stock
+      - name: date
+        type: string
+        default: "20010911"
+        doc: A date, formatted as YYYYMMdd
+  
+  - name: price_range_response
+    type: record
+    doc: |-
+      A range of stock prices from a start date to an end date; returns a limit of 100 records at a time.
+    fields:
+      - name: results
+        doc: A json array of stock information between the dates specified.
+        type:
+          type: array
+          items: daily_prices_response
+
+  - name: price_range_params
+    type: record
+    doc: |-
+      Stock range request parameters. Returns daily prices for a given stock @symbol@ from @beg_date@ to @end_date@.
+      Use the @_from@ parameter to page through the results.
+    fields:
+      - name: symbol
+        type: string
+        doc: The stock symbol
+        default: AAPL
+      - name: _from
+        type: int
+        doc: Integer offset for where to return results from. A multiple of 100.
+      - name: beg_date
+        type: string
+        doc: Formatted as YYYYMMdd
+        default: "20010811"
+      - name: end_date
+        type: string
+        doc: Formatted as YYYYMMdd
+        default: "20011011"

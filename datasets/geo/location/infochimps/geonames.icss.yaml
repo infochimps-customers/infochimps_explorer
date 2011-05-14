@@ -1,0 +1,175 @@
+namespace: geo.location.infochimps
+protocol: geonames
+
+messages:
+  places:
+    doc: >-
+      Returns sorted pages of 'entities' within a geo location specified by a (lng,lat) pair and a resolution.
+    request:
+      - name: geo_search_request
+        type: geo_search_request
+    response: geojson_feature_collection
+
+code_assets:
+  - name: geonames_endpoint
+    location: code/geonames_endpoint.rb
+    
+data_assets:
+  - name: geonames_data_asset
+    type: geo_index_format
+    location: data/geonames_geojson
+    
+targets:
+  apeyeye:
+    - code_assets:
+        - geonames_endpoint
+        
+  geo_index:
+    - table_name: geo_location_infochimps_place
+      min_zoom: 5
+      max_zoom: 13
+      chars_per_page: 10000
+      sort_field: name
+      data_assets:
+        - geonames_data_asset
+      
+types:
+
+  - name: geo_search_request
+    type: record
+    doc: A search request against geonames places
+    fields:
+      - name: category
+        type: string
+        doc: The Infochimps category of the entities to find
+      - name: lng
+        type: float
+        doc: The longitude (x coordinate) to search near
+      - name: lat
+        type: float
+        doc: The latitude (y coordinate) to search near
+      - name: zoom
+        type: int
+        doc: >-
+          The resolution of map tile to return, ranges from 1 to 13 with 1 being the lowest and 13
+          being the highest.
+      - name: _limit
+        type: int
+        doc: An integer limit to the number of pages returned
+      - name: _from
+        type: int
+        doc: Integer offset to start results at. A multiple of 10.          
+
+  - name: geojson_geometry
+    type: record
+    doc: A geoJSON geometry
+    fields:
+      - name: coordinates
+        doc: A (possibly) nested array whose schema depends on @type@
+        type:
+          type: array
+          items: float
+      - name: type
+        type: string
+        doc: One of [Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon]
+      
+  - name: geojson_feature
+    type: record
+    doc: A geoJSON feature
+    fields:
+      - name: type
+        type: string
+        doc: Always "Feature" meaning this object is a valid geoJSON feature
+      - name: geometry
+        type: geojson_geometry
+      - name: properties
+        doc: An arbitrary set of key values describing this particular feature
+        type:
+          type: map
+          values: string
+          
+  - name: geojson_feature_collection
+    type: record
+    doc: >-
+      A sorted list of @features@ in the geo location. This list is a valid geoJSON 'FeatureCollection'.
+    fields:
+      - name: type
+        type: string
+        doc: Always "FeatureCollection" meaning this object is a valid geoJSON feature collection
+      - name: features
+        type:
+          type: array
+          items: geojson_feature
+          
+  - name: geo_index_format
+    type: record
+    doc: An intermediate format required for storing into the geo index
+    fields:
+      - name: row_path
+        type: string
+        doc: category + '.' + source for the geo data
+      - name: geojson_blob
+        type: string
+        doc: A valid geojson "Feature"
+        
+  - name: raw_geoname_table
+    type: record
+    doc: The main geoname table for all countries.
+    fields:
+      - name: geonameid
+        type: int
+        doc: Integer id of record in geonames database
+      - name: name
+        type: string
+        doc: Name of geographical point (utf8) varchar(200)
+      - name: asciiname
+        type: string
+        doc: Name of geographical point in plain ascii characters, varchar(200)
+      - name: alternatenames
+        type: string
+        doc: Alternate names, comma separated varchar(5000)
+      - name: latitude
+        type: float
+        doc: Latitude in decimal degrees (wgs84)
+      - name: longitude
+        type: float
+        doc: Longitude in decimal degrees (wgs84)
+      - name: feature_class
+        type: string
+        doc: see http://www.geonames.org/export/codes.html, char(1)
+      - name: feature_code
+        type: string
+        doc: see http://www.geonames.org/export/codes.html, varchar(10)
+      - name: country_code
+        type: string
+        doc: ISO-3166 2-letter country code, 2 characters
+      - name: cc2
+        type: string
+        doc: alternate country codes, comma separated, ISO-3166 2-letter country code, 60 characters
+      - name: admin1_code
+        type: string
+        doc: fipscode (subject to change to iso code), see exceptions below, see file admin1Codes.txt for display names of this code; varchar(20)
+      - name: admin2_code
+        type: string
+        doc: code for the second administrative division, a county in the US, see file admin2Codes.txt; varchar(80) 
+      - name: admin3_code
+        type: string
+        doc: code for third level administrative division, varchar(20)
+      - name: admin4_code
+        type: string
+        doc: code for fourth level administrative division, varchar(20)
+      - name: population
+        type: long
+        doc: bigint (8 byte int) 
+      - name: elevation
+        type: int
+        doc: in meters, integer
+      - name: gtopo30
+        type: int
+        doc: average elevation of 30'x30' (ca 900mx900m) area in meters, integer
+      - name: timezone
+        type: string
+        doc: the timezone id (see file http://download.geonames.org/export/dump/timeZone.txt)
+      - name: modification_date
+        type: string
+        doc: date of last modification in yyyy-MM-dd format

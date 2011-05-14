@@ -1,0 +1,105 @@
+---
+namespace: social.network.tw
+protocol: search
+
+data_assets:
+  - name: people_search_data_asset
+    location: data/twitter_user_profile
+    type: profile
+      
+messages:
+  people_search:
+    response: people_search_response
+    request:
+      - name: people_search_params
+        type: people_search_params
+        
+targets:
+        
+  catalog:
+    - name: people_search_catalog_entry
+      title: TwPeopleSearch
+      description: Full text search, on any or all fields, of twitter user profiles.
+      tags:
+        - twitter
+        - text
+        - huge
+        - search
+        - profile
+        - social-network
+        - social
+        - network
+        - awesomeapi
+      messages:
+        - people_search
+  
+types:
+
+  - name: people_search_params
+    type: record
+    doc: Parameters for querying twitter people search
+    fields:
+      - name: _from
+        type: int
+        doc: Integer offset to start @results@ at. A multiple of 100.
+      - name: q
+        type: string
+        doc: |-
+          The term to search for. You may use 'field:term' to search for that term in only a given field (or even 'field.subfield:term' if there are nested fields
+        default: "description:infochimps"
+
+  - name: profile
+    type: record
+    doc: A twitter user's profile.
+    fields:
+      - name: user_id
+        type: int
+        doc: twitter id of the user
+      - name: scraped_at
+        type: long
+        doc: When the the infochimps flying monkeys scraped the user's profile from the twitter api. (YYYYMMddhhmmss)
+      - name: screen_name
+        type: string
+        doc: Twitter users' screen name
+      - name: name
+        type: string
+        doc: User's hand entered, raw text,  actual name
+      - name: url
+        type: string
+        doc: User's web site
+      - name: location
+        type: string
+        doc: User's hand entered, raw text, location
+      - name: description
+        type: string
+        doc:  User's hand entered, raw text, description
+      - name: time_zone
+        type: string
+        doc: Time zone as tzinfo compatible string
+      - name: utc_offset
+        type: string
+      - name: lang
+        type: string
+        doc: two letter language code, eg. 'en'
+      - name: geo_enabled
+        type: string
+        doc: The string 'true' if the user has enabled geo location, 'false' otherwise
+      - name: verified
+        type: string
+        doc: Is this a twitter verified account? 'true' or 'false'
+      - name: contributors_enabled
+        type: string
+        doc: If the twitter account is a pro account allowing multiple users to control visit dev.twitter.com for details
+        
+  - name: people_search_response
+    type: record
+    doc: A json object containing an array of matching profiles as well as the total number of matching profiles.
+    fields:
+      - name: total
+        type: int
+        doc: Total number of matching profiles
+      - name: results
+        type:
+          type: array
+          items: profile
+        doc: An array of matching profile objects

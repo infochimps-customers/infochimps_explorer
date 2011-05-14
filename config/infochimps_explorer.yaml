@@ -1,0 +1,16 @@
+defaults: &defaults
+  :session_secret:     2bee1ab04b03da1d8b8c2dd112e8aa3f9c52781ad4a152906e93bbb8b1d9c681
+
+production:
+  :threescale_provider_key:
+  <<: *defaults
+  
+development:
+  <<: *defaults
+  :dump_icss_on_load:    false
+  :logging:              true
+  
+staging:
+  <<: *defaults  
+  :dump_icss_on_load:    true
+  :logging:              true

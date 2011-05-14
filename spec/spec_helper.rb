@@ -1,12 +1,24 @@
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-$LOAD_PATH.unshift(File.dirname(__FILE__))
+require 'spork'
 require 'rspec'
-require 'infochimps_explorer'
 
-# Requires supporting files with custom matchers and macros, etc,
-# in ./support/ and its subdirectories.
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
+Spork.prefork do
+  # This code is run only once when the spork server is started
 
-RSpec.configure do |config|
-  
+  ENV["RACK_ENV"] ||= 'test'
+  RACK_ENV = ENV["RACK_ENV"] unless defined?(RACK_ENV)
+
+  require File.join(File.dirname(__FILE__), '../lib/boot')
+  $LOAD_PATH.unshift(File.dirname(__FILE__))
+
+  # Requires custom matchers & macros, etc from files in ./support/ & subdirs
+  Dir[ROOT_DIR.path("spec/support/**/*.rb")].each {|f| require f}
+
+  # Configure rspec
+  RSpec.configure do |config|
+
+  end
+end
+
+Spork.each_run do
+  # This code will be run each time you run your specs.
 end

@@ -1,0 +1,130 @@
+---
+
+
+
+#
+# THIS IS OUTDATED
+#
+
+namespace: geo.location.infochimps
+protocol: the_works
+
+data_assets:
+  - name: geonames_data_asset
+    type: hbase_fourple_format
+    location: data/geo.out
+
+messages:
+  places:
+    doc: >-
+      Returns sorted pages of 'entities' within a geo location specified by a (lng,lat) pair and a resolution.
+    request:
+      - name: geo_search_request
+        type: geo_search_request
+    response: geojson_feature_collection
+
+  paths:
+    doc: >-
+      Returns sorted pages of 'entities' within a geo location specified by a (lng,lat) pair and a resolution.
+    request:
+      - name: geo_search_request
+        type: geo_search_request
+    response: geojson_feature_collection
+    
+  events:
+    doc: >-
+      Returns sorted pages of 'entities' within a geo location specified by a (lng,lat) pair and a resolution.
+    request:
+      - name: geo_search_request
+        type: geo_search_request
+    response: geojson_feature_collection
+
+    
+targets:
+  hbase:
+    - table_name: test_texas_place
+      loader: fourple_loader
+      data_assets:
+        - geonames_data_asset
+      column_families:
+        - page
+
+types:
+  - name: geo_search_request
+    type: record
+    doc: A search request against the 'works', everything Infochimps knows about a geo location.
+    fields:
+      - name: lng
+        type: float
+        doc: Longitude
+      - name: lat
+        type: float
+        doc: Latitude
+      - name: zoom
+        type: int
+        doc: >-
+          A resolution level, ranges from 1-13. Not all data is available at all zoom levels.
+      - name: category
+        type: string
+        doc: The Infochimps 'category' of the requested data. See the @gazette@ api call to discover categories.
+      - name: _limit
+        type: int
+        doc: An integer limit to the number of pages returned
+      - name: _from
+        type: int
+        doc: Integer offset to start results at. A multiple of 10.
+
+  - name: geojson_geometry
+    type: record
+    doc: A geoJSON geometry
+    fields:
+      - name: coordinates
+        doc: A (possibly) nested array whose schema depends on @type@
+        type:
+          type: array
+          items: float
+      - name: type
+        type: string
+        doc: One of [Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon]
+      
+  - name: geojson_feature
+    type: record
+    doc: A geoJSON feature
+    fields:
+      - name: type
+        type: string
+        doc: Always "Feature" meaning this object is a valid geoJSON feature
+      - name: geometry
+        type: geojson_geometry
+      - name: properties
+        doc: An arbitrary set of key values describing this particular feature
+        type:
+          type: map
+          values: string
+          
+  - name: geojson_feature_collection
+    type: record
+    doc: >-
+      A sorted list of @features@ in the geo location. This list is a valid geoJSON 'FeatureCollection'.
+    fields:
+      - name: type
+        type: string
+        doc: Always "FeatureCollection" meaning this object is a valid geoJSON feature collection
+      - name: features
+        type:
+          type: array
+          items: geojson_feature
+    
+  - name: hbase_fourple_format
+    type: record
+    doc: intermediate format for the data store
+    fields:
+      - name: row_key
+        type: string
+      - name: column_family
+        type: string
+      - name: column_name
+        type: string
+      - name: column_value
+        type: string
+

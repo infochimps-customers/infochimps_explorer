@@ -1,0 +1,125 @@
+---
+namespace: geo.location.geonames
+protocol: autocomplete
+
+messages:
+  place_names:
+    doc: |-
+      Returns an array of place names as possible @completions@ to the passed in @prefix@ parameter.
+      Other, optional, parameters include the @country@ and @state@.
+    request:
+      - name: place_names_prefix_request
+        type: place_names_prefix_request
+    response: place_names_response
+
+targets:
+  catalog:
+    - name: geo_names_catalog_entry
+      title: "Global Place Names Autocomplete: GeoNames"
+      description: Autocomplete any place name in the world.
+      tags:
+        - place_names
+        - places
+        - names
+        - geonames
+        - autocomplete
+        - geo
+        - location
+        - latitude
+        - longitude
+        - awesomeapi
+        
+      messages:
+        - place_names
+types:
+
+  - name: place_names_prefix_request
+    type: record
+    doc: |-
+      Place names request. A @prefix@ to autocomplete. One or both of @country@ and @state@ can be supplied
+      to constrain the results.
+    fields:
+      - name: prefix
+        type: string
+        doc: A simple prefix, eg. "port"
+        default: arans
+      - name: country
+        type: string
+        default: US
+        doc: An (optional) string ISO-3166 2-letter country code, 2 characters
+      - name: state
+        type: string
+        default: TX
+        doc: Administrative subdivision one code (eg. TX or AK when @country@ is US)
+        
+  - name: place_names_response
+    type: record
+    doc: A json object containing possible @completions@ for the passed in prefix
+    fields:
+      - name: completions
+        doc: A json array of possible completions
+        type:
+          type: array
+          items: string
+    
+  - name: geoname_table
+    type: record
+    doc: The main geoname table for all countries.
+    fields:
+      - name: geonameid
+        type: int
+        doc: Integer id of record in geonames database
+      - name: name
+        type: string
+        doc: Name of geographical point (utf8) varchar(200)
+      - name: asciiname
+        type: string
+        doc: Name of geographical point in plain ascii characters, varchar(200)
+      - name: alternatenames
+        type: string
+        doc: Alternate names, comma separated varchar(5000)
+      - name: latitude
+        type: float
+        doc: Latitude in decimal degrees (wgs84)
+      - name: longitude
+        type: float
+        doc: Longitude in decimal degrees (wgs84)
+      - name: feature_class
+        type: string
+        doc: see http://www.geonames.org/export/codes.html, char(1)
+      - name: feature_code
+        type: string
+        doc: see http://www.geonames.org/export/codes.html, varchar(10)
+      - name: country_code
+        type: string
+        doc: ISO-3166 2-letter country code, 2 characters
+      - name: cc2
+        type: string
+        doc: alternate country codes, comma separated, ISO-3166 2-letter country code, 60 characters
+      - name: admin1_code
+        type: string
+        doc: fipscode (subject to change to iso code), see exceptions below, see file admin1Codes.txt for display names of this code; varchar(20)
+      - name: admin2_code
+        type: string
+        doc: code for the second administrative division, a county in the US, see file admin2Codes.txt; varchar(80) 
+      - name: admin3_code
+        type: string
+        doc: code for third level administrative division, varchar(20)
+      - name: admin4_code
+        type: string
+        doc: code for fourth level administrative division, varchar(20)
+      - name: population
+        type: long
+        doc: bigint (8 byte int) 
+      - name: elevation
+        type: int
+        doc: in meters, integer
+      - name: gtopo30
+        type: int
+        doc: average elevation of 30'x30' (ca 900mx900m) area in meters, integer
+      - name: timezone
+        type: string
+        doc: the timezone id (see file http://download.geonames.org/export/dump/timeZone.txt)
+      - name: modification_date
+        type: string
+        doc: date of last modification in yyyy-MM-dd format

@@ -1,0 +1,217 @@
+---
+namespace: web.analytics.traffic
+protocol: cedexis
+
+messages:
+  network_provider_stats:
+    request:
+      - name: network_provider_params
+        type: network_provider_params
+    response: statistics
+    
+  provider_lookup:
+    request:
+      - name: lookup_params
+        type: lookup_params
+    response: provider_response
+    samples:
+      - request:
+          - q:          rackspace
+    
+  network_lookup:
+    request:
+      - name: lookup_params
+        type: lookup_params
+    response: network_response
+    samples:
+      - request:
+          - q:          rackspace
+
+targets:
+  catalog:
+    - name: cedexis_network_provider_stats_catalog_entry
+      title: Cedexis Network Provider Statistics
+      tags:
+        - cedexis
+        - analytics
+        - network
+        - providers
+        - measurements
+        - web-measurements
+        - traffic
+        - internet
+        - internet-statistics
+        - statistics
+        - awesomeapi
+      messages:
+        - network_provider_stats
+        - provider_lookup
+        - network_lookup
+      description: |-
+
+        h2. Network Provider Statistics
+
+        
+        Given a @network@ and a @provider@ provides up to 15 distinct measurements of web traffic statistics, as reported by "Cedexis":http://www.cedexis.com
+        
+        Every day, the Cedexis Radar community collects over 450 million measurements, based on the experiences of actual end-users around the world.
+
+        h3. Measurements
+
+        Measurements include
+
+        * Network availability
+        * SSL Response Time
+        * SSL Custom measurement
+        * SSL Connect Time
+        * RTMP Connect Time
+        * HTTP Custom Measurement
+        * RTMP Buffer
+        * HTTP Connect Time
+        * HTTP Response Time
+        * SSL Throughput
+        * HTTP Large Files
+        * HTTP Throughput
+        * RTMP Throughput
+
+        h3. Usage
+
+        In order to find the provider of interest first use the @provider_lookup@ call. This allows you to query on a string, eg. "Yahoo.com"
+        an get back an array of possible providers along with key to use when querying the @network_provider_stats@ call.
+
+        Additionally, to find the network(s) of interest use the @network_lookup@ call. This allows you to query on a string and get back
+        an array of matching networks along with their keys to use when querying the @network_provider_stats@ call. For example, using "Africa"
+        would return all networks in Africa.
+
+          
+types:
+
+  - name: network_provider_params
+    type: record
+    docs: One of a provider, found with the @provider_lookup@ call, and one of a network, found with the @network_lookup@ call.
+    fields:
+      - name: provider
+        type: string
+        doc: A provider found using the @provider_lookup@ call, eg. @yahoo.com@
+        default: yahoo.com
+      - name: network
+        type: string
+        default: europe:great_britain:uk_rackspace
+        doc: A network found using the @network_lookup@ call. eg. @europe:great_britain:uk_rackspace@
+      
+  - name: lookup_params
+    type: record
+    fields:
+      - name: q
+        type: string
+        default: Rackspace
+        doc: |-
+          The term to search for. You may use 'field:term' to search for that term in only a given field (or even 'field.subfield:term' if there are nested fields)
+
+  - name: provider_obj
+    type: record
+    doc: A single network provider
+    fields:
+      - name: name
+        type: string
+        doc: Human readable name of the network.
+      - name: label
+        type: string
+        doc: Sanitized string to use as the @provider@ identifier when using the @network_provider_stats@ call
+
+  - name: network_obj
+    type: record
+    doc: A single network
+    fields:
+      - name: market_name
+        type: string
+        doc: Market the network is in, eg. Africa
+      - name: country_label
+        type: string
+        doc: Country the network is in, eg. Tanzania
+      - name: network_label
+        type: string
+        doc: Other human readable label of the network in question, eg. "Satcom Networks Africa"
+      - name: network_key
+        type: string
+        doc: Sanitized string to use as the @network@ identifier when using the @network_provider_stats@ call
+        
+  - name: provider_response
+    type: record
+    fields:
+      - name: total
+        type: int
+        doc: Total number of providers matching query
+      - name: results
+        doc: An array of providers matching query. Each provider contains the key to use when querying the @network_provider_stats@ call.
+        type:
+          type: array
+          items: provider_obj
+
+  - name: network_response
+    type: record
+    fields:
+      - name: total
+        type: int
+        doc: Total number of networks matching query
+      - name: results
+        doc: An array of networks matching query. Each network contains the key to use when querying the @network_provider_stats@ call.
+        type:
+          type: array
+          items: network_obj
+
+  - name: measurement
+    type: record
+    doc: A single measurement consisting of a @count@ and a @score@
+    fields:
+      - name: count
+        type: int
+      - name: score
+        type: int
+        
+  - name: statistics
+    type: record
+    doc: |-
+      A json hash containing up to 15 different measurements with their scores and counts. The @count@ is the number of measurements taken
+      and the @score@ is the measurement result itself. The units of @score@ can either be the number of milliseconds (ms) for response times and
+      connect times, the number of kilobytes per second (kbps) for throughput, or a percentage (0-100) for availability.
+    fields:
+      - name: availability
+        type: measurement
+        doc: Network availability, a percentage (0-100)
+      - name: ssl_response_time
+        type: measurement
+        doc: SSL Response Time, in milliseconds 
+      - name: ssl_custom
+        type: measurement
+        doc: SSL Custom measurement
+      - name: ssl_connect_time
+        type: measurement
+        doc: SSL Connect Time, in milliseconds
+      - name: rtmp_conect_time
+        type: measurement
+        doc: RTMP Connect Time, in milliseconds
+      - name: http_custom
+        type: measurement
+        doc: HTTP Custom Measurement
+      - name: rtmp_buffer
+        type: measurement
+        doc: RTMP Buffer
+      - name: http_connect_time
+        type: measurement
+        doc: HTTP Connect Time, in milliseconds
+      - name: http_response_time
+        type: measurement
+        doc: HTTP Response Time, in milliseconds
+      - name: ssl_throughput
+        type: measurement
+        doc: SSL Throughput, in kilobytes per second
+      - name: http_large_files
+        type: measurement
+        doc: HTTP Large Files, in kilobytes per second
+      - name: http_throughput
+        type: measurement
+        doc: HTTP Throughput, in kilobytes per second
+      - name: rtmp_throughput
+        type: measurement
+        doc: RTMP Throughput, in kilobytes per second

@@ -1,0 +1,123 @@
+---
+namespace: social.network.tw
+protocol: util
+
+messages:
+  autocomplete_sn:
+    doc: Complete a Twitter user's screen_name
+    request:
+      - name: prefix_request
+        type: prefix_request
+    response: completions_response
+  map_id:
+    doc: Resolve all of a Twitter user's user_id, screen_name, and user_id by passing in one of them.
+    request:
+      - name: map_id_request
+        type: map_id_request
+    response: id_triple
+
+targets:    
+  catalog:
+    - name: tw_autocomplete_sn_catalog_entry
+      title: "Twitter Screen Name Autocomplete"
+      messages:
+        - autocomplete_sn
+      description: >-
+
+        Uses the same type of autocomplete that the Twitter iPhone app uses. Given a twitter screen name prefix
+        returns up to 100 possible screen name completions sorted by trstrank.
+        
+      tags:
+        - autocomplete
+        - network
+        - social
+        - twitter
+        - pagerank
+        - socialnetwork
+        - ranking
+        - networking
+        - bigdata
+        - twitter-com
+        - trstrank
+        - reputation
+        - usergraph
+        - infochimps-api
+        - awesomeapi
+      
+    - name: tw_map_id_catalog_entry
+      title: "Twitter Screen Name, User ID, Search ID Mapping"
+      messages:
+        - map_id
+      description: |-
+        Given one of a twitter user's @screen_name@, @user_id@, @search_id@ returns up to all three.
+      tags:
+        - autocomplete
+        - network
+        - social
+        - twitter
+        - pagerank
+        - socialnetwork
+        - ranking
+        - networking
+        - bigdata
+        - twitter-com
+        - trstrank
+        - reputation
+        - usergraph
+        - infochimps-api
+        - awesomeapi
+    
+types:
+
+  - name: map_id_request
+    type: record
+    doc: Contains one of a Twitter user's (screen_name, user_id, search_id)
+    fields:
+      - name: screen_name
+        type: string
+        default: infochimps
+        doc: Twitter user's screen name
+      - name: search_id
+        type: int
+        doc: A Twitter user's search id as reported by the Twitter search api
+      - name: user_id
+        type: int
+        doc: A Twitter user's id
+
+  - name: id_triple
+    type: record
+    doc: Contains, at most, all of a Twitter user's (screen_name, user_id, search_id)
+    fields:
+      - name: screen_name
+        type: string
+        doc: Twitter user's screen name
+      - name: search_id
+        type: int
+        doc: A Twitter user's search id as reported by the Twitter search api
+      - name: user_id
+        type: int
+        doc: A Twitter user's id
+        
+
+  - name: prefix_request
+    type: record
+    doc: A three-character or more prefix of a Twitter screen name
+    fields:
+      - name: prefix
+        type: string
+        default: infochi
+        doc: A three-character or more prefix of a Twitter screen name
+      
+  - name: completions_response
+    type: record
+    doc: A json object containing up to 100 possible completions of the given prefix.
+    fields:
+      - name: prefix
+        type: string
+        doc: The prefix searched on.
+      - name: completions
+        doc: A json array of possible screen name completions, sorted by trstrank.
+        type:
+          type: array
+          items: string
+          

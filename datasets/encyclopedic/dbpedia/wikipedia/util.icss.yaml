@@ -1,0 +1,54 @@
+--- 
+namespace: encyclopedic.dbpedia.wikipedia
+protocol: util
+
+messages:
+  autocomplete_title:
+    doc: Autocomplete Wikipedia Article Titles. Returns an array of up to 100 @completions@ for a given @prefix@.
+    request:
+      - name: prefix_request
+        type: prefix_request
+    response: completions_response
+
+targets:
+  catalog:
+    - name: dbpedia_article_titles_autocomplete
+      title: Wikipedia Articles Title Autocomplete
+      description: |-
+        
+        h2. Autocomplete Wikipedia Titles
+
+        Autocomplete any wikipedia title.
+        
+      tags:
+        - wikipedia
+        - dbpedia
+        - text
+        - search
+        - articles
+        - encyclopedia
+        - encyclopedic
+        - autocomplete
+        - awesomeapi
+        
+      messages:
+        - autocomplete_title
+types:
+  - name: prefix_request
+    type: record
+    doc: Prefix search request against the wikipedia abstract titles.
+    fields:
+      - name: prefix
+        type: string
+        default: dog
+        doc: A simple string, eg. 'dog'
+        
+  - name: completions_response
+    type: record
+    doc: A json object containing title completions as an array of strings
+    fields:
+      - name: completions
+        doc: An array of titles
+        type:
+          type: array
+          items: string
