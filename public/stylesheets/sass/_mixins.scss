@@ -1,0 +1,112 @@
+@mixin rounded($side: all, $radius: 5px) {
+  @if $side == 'all' {
+    border-radius: $radius;
+    -moz-border-radius: $radius;
+    -webkit-border-radius: $radius;
+  }
+  @else {
+    $moz_side: '';
+    @if $side == 'top-right' { $moz_side: 'topright'; }
+    @if $side == 'top-left' { $moz_side: 'topleft'; }
+    @if $side == 'bottom-right' { $moz_side: 'bottomright'; }
+    @if $side == 'bottom-left' { $moz_side: 'bottomleft'; }
+    
+    border-#{$side}-radius: $radius;
+    -moz-border-radius-#{$moz_side}: $radius;
+    -webkit-border-#{$side}-radius: $radius;
+  }
+}
+
+@mixin inner_shadow($color: #e3e3e3) {
+  -moz-box-shadow: inset 0px 1px 3px 1px $color;
+  -webkit-box-shadow: inset 0px 1px 3px 1px $color;
+  box-shadow: inset 0px 1px 3px 1px $color;
+}
+
+@mixin bg_gradient($top, $bottom) {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, $top), color-stop(100%, $bottom));
+  background-image: -moz-linear-gradient(top, $top, $bottom);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#{$top}, endColorstr=#{$bottom});
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#{$top}, endColorstr=#{$bottom})";
+}
+
+@mixin button($base-color, $padding-tb, $padding-ss, $radius, $font-size, $light: 1, $action_effects: true){
+  /* Define calculated button colors */
+  $dark-color: darken($base-color, 10%);
+  $light-color: lighten($base-color, $light*7%);
+  $border-color: darken($base-color, $light*15%);
+  $light-border-color: darken($base-color, 5%);
+  $highlight-color: transparentize(desaturate(lighten($base-color, 40%), 50%), 0.5);
+  $shadow-color: darken($base-color, 15%);
+  $text-shadow-color: darken($base-color, 15%);
+  
+  border: 1px solid $border-color;
+  border-top-color: $light-border-color;
+  color: white;
+  @include rounded('all', $radius);
+  padding: $padding-tb $padding-ss;
+  text-align: center;
+  text-decoration: none;
+  font-size: $font-size;
+  font-weight: bold;
+  opacity: 0.9;
+    
+  background-color: $base-color;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#{$light-color}, endColorstr=#{$dark-color}); /* for IE browswers */
+  background: -webkit-gradient(linear, left top, left bottom, from(#{$light-color}), to(#{$dark-color})); /* for webkit browsers */
+  background: -moz-linear-gradient(top,  #{$light-color},  #{$dark-color}); /* for firefox 3.6+ */ 
+  
+  -moz-box-shadow: inset 1px 1px 0px 0px $highlight-color;
+  -webkit-box-shadow: inset 1px 1px 0px 0px $highlight-color;
+  box-shadow: inset 1px 1px 0px 0px $highlight-color;
+  
+  text-shadow: $text-shadow-color 0 1px 2px;
+  @if $action_effects {
+    &:hover {
+      opacity: 1;
+    }
+    &:active {
+      padding-top: $padding-tb + 1px;
+      padding-bottom: $padding-tb - 1px;
+    }
+  
+    &:hover, &:focus {
+      filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#{lighten($light-color, 5%)}', endColorstr='#{$dark-color}')";  /* for IE browswers */
+      background: -webkit-gradient(linear, left top, left bottom, from(lighten($light-color, 5%)), to($dark-color)); /* for webkit browsers */
+      background: -moz-linear-gradient(top, lighten($light-color, 5%),  $dark-color); /* for firefox 3.6+ */ 
+    }
+    &:active, &.depressed {
+      filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#{desaturate(lighten($dark-color, 5%),10%)}', endColorstr='#{desaturate($base-color, 10%)}')"; /* for IE browswers */
+      background: -webkit-gradient(linear, left top, left bottom, from(desaturate(lighten($dark-color, 5%),10%)), to(desaturate($base-color, 10%))); /* for webkit browsers */
+      background: -moz-linear-gradient(top, desaturate(lighten($dark-color, 5%),10%),  desaturate($base-color, 10%)); /* for firefox 3.6+ */ 
+    
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    
+      border-color: $border-color;
+    }
+  }
+    &.disabled, &.disabled:hover, &.disabled:active, &.disabled:focus {
+      $disabled-start-color: mix(desaturate(lighten($dark-color, 5%),10%), #AAA, 75%);
+      $disabled-end-color: mix(desaturate($base-color,10%), #AAA, 75%);
+    
+      padding: $padding-tb $padding-ss;
+      opacity: 0.9;
+    
+      filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$disabled-start-color}', endColorstr='#{$disabled-end-color}')"; /* for IE browswers */
+      background: -webkit-gradient(linear, left top, left bottom, from($disabled-start-color), to($disabled-end-color)); /* for webkit browsers */
+      background: -moz-linear-gradient(top, $disabled-start-color,  $disabled-start-color); /* for firefox 3.6+ */
+    
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    
+      border-color: $border-color;
+      cursor: defaultl
+    }
+  @if $base-color == #e0e0e0 or $base-color == #f3f3f3 {
+    color: #888888;
+    text-shadow: white 0 1px 2px;
+  }
+}

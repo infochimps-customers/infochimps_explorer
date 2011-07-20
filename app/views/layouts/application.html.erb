@@ -1,0 +1,118 @@
+<!doctype html>  
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]--> 
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]--> 
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]--> 
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]--> 
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]--> 
+<head> 
+  <meta charset="utf-8"> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+ 
+  <title>ApeyEye Icss Preview Doohickey | Infochimps</title> 
+  
+  <meta name="description" content=""/> 
+  
+  <script type="text/javascript" src="http://www.infochimps.com/javascripts/lib/modernizr-1.6.min.js" ></script> 
+ 
+  <%= stylesheet_link_tag  "style", "markitup","markitup/sets/textile/style.css", "http://georgeassets0.infochimps.com/css/style.css?v=2", "http://georgeassets0.infochimps.com/css/jquery.ui/base/minified/jquery.ui.all.min.css","http://georgeassets0.infochimps.com/css/jquery.ui/base/minified/jquery.ui.selectmenu.css" %>
+  <link rel="image_src" href="http://georgeassets0.infochimps.com/images/infochimps-logo-b.png" /> 
+</head> 
+ 
+<body>        
+  <div id="outer-container"> 
+    <header> 
+      <div class="container"> 
+        <div id="logo"> 
+          <a href="/"><img alt="Infochimps Logo" src="http://www.infochimps.com/images/infochimps-logo-b.png?1299185784" /></a> 
+        </div> 
+        <nav> 
+          <ul> 
+            <li class="home"><a href="http://www.infochimps.com/">infochimps</a></li>	
+            <li class="find-data"><a href="http://www.infochimps.com/search">Find Data</a></li> 
+            <li class="apis"><a href="http://www.infochimps.com/apis">APIs</a></li> 
+            <li class="help"><a href="http://www.infochimps.com/faq">FAQ</a></li> 
+          </ul> 
+        </nav> 
+      </div> 
+    </header> 
+    
+    <div id="container"> 
+      <div id="main" class="container"> 
+        <article class="<%= params[:controller].underscore %> <%= params[:action].underscore %>"> 
+          <section class="left">
+            <%= yield %>
+          </section>
+  
+          <section class='span-6 last' id='sidebar'> 
+            <section class='action-box'> 
+              <div class='padded-container'> 
+                <header> 
+                  <h1>Get the API</h1> 
+                  <div class='clearfix'></div> 
+                </header> 
+                Easy, instant, simple answers to hard questions. Starting at $0 per month.
+                <a href='http://infochimps.com/apis/features-and-pricing' id='dataset_api_link'> 
+                  <div class='dark'> 
+                    <img alt="Icon-api" src="http://www.infochimps.com/images/icon-api.png?1296866877" /> 
+                    <span> 
+                      Sign Up
+                    </span> 
+                  </div> 
+                </a> 
+              </div> 
+            </section> 
+          </section> 
+        </article>
+      </div> 
+      <div id="bottom-page-nav-bar" class="page-nav-bar"> 
+        <div class="container"> 
+        </div> 
+      </div> 
+    </div> <!--! end of #container --> 
+  
+    <footer> 
+      <div id="inner-footer" class="container"> 
+        <div id="footer-top"> 
+          <section id="legal" class="span-12"> 
+            <h5>Infochimps&trade; is copyright Infochimps, Inc. &copy; 2011</h5> 
+            <p>Licensing terms for the datasets available on this website are set by their sources, not by Infochimps.<br /> See the License information for each dataset for more information.</p> 
+			<p>Follow <a href="http://twitter.com/infochimps">@infochimps</a> on Twitter.</p> 
+          </section> 
+          <nav class="span-12 last"> 
+            <ul class="span-4 "> 
+	          <li><a href="http://www.infochimps.com/about">About us</a></li>   
+              <li><a href="http://www.infochimps.com/press">Press</a></li>   
+	          <li><a href="http://blog.infochimps.com">Blog</a></li> 
+              <li class="last"><a href="http://www.infochimps.com/sell">Sell data</a></li> 
+            </ul> 
+            <ul class="span-4"> 
+              <li><a href="http://www.infochimps.com/terms">Terms of use</a></li>        
+              <li><a href="http://www.infochimps.com/privacy">Privacy</a> &amp; <a href="http://www.infochimps.com/security">Security</a></li> 
+              <li><a href="http://www.infochimps.com/tools">Tools &amp; Services</a></li> 
+			  <li class="last"><a href="http://www.infochimps.com/datasets">Data sets</a></li> 
+            </ul> 
+            <ul class="span-4 last"> 
+              <li><a href="http://www.infochimps.com/contact">Contact</a></li> 
+              <li><a href="http://www.infochimps.com/team">Team</a></li> 
+              <li><a href="http://www.infochimps.com/careers">Careers</a></li> 
+			  <li class="last"><a href="http://www.infochimps.com/apis">Developers</a></li> 
+            </ul> 
+          </nav> 
+        </div> 
+        <div id="footer-baseline"> 
+        </div> 
+        <div class="clearfix"><!-- clearfix --></div> 
+      </div> 
+ 
+    </footer> 
+  </div> <!--! end of #outer-container --> 
+  
+<%= javascript_include_tag(:defaults, "http://www.infochimps.com/javascripts/lib/jquery-1.4.4.min.js","http://www.infochimps.com/javascripts/lib/jquery.tools/jquery.tools.min.js","http://www.infochimps.com/javascripts/lib/jquery.jsonp-2.1.4.min.js","http://www.infochimps.com/javascripts/lib/jquery.tools/tabs.min.js","http://www.infochimps.com/javascripts/lib/jquery.tools/tooltip.min.js","http://www.infochimps.com/javascripts/lib/jquery.tools/tooltip.dynamic.min.js","http://www.infochimps.com/javascripts/lib/jquery.tools/tooltip.slide.min.js","http://www.infochimps.com/javascripts/lib/jquery.ui/jquery.ui.core.min.js", "http://www.infochimps.com/javascripts/lib/jquery.ui/jquery.ui.widget.min.js", "http://www.infochimps.com/javascripts/lib/jquery.ui/jquery.ui.button.min.js","http://www.infochimps.com/javascripts/lib/jquery.ui/jquery.ui.selectmenu.min.js","http://www.infochimps.com/javascripts/lib/jquery.ui/jquery.effects.core.min.js","http://www.infochimps.com/javascripts/lib/jquery.ui/jquery.effects.highlight.min.js","http://www.infochimps.com/javascripts/application.js","http://www.infochimps.com/javascripts/dev-hacks.js","http://www.infochimps.com/javascripts/search.js","http://www.infochimps.com/javascripts/forms.js", "http://www.infochimps.com/javascripts/api_calls.js", "http://www.infochimps.com/javascripts/social-media.js", "http://www.infochimps.com/javascripts/github.js", "jquery.markitup", 'markitup/textile-set.js', 'textile_converter.js') %>
+  
+  <!--[if lt IE 7 ]>
+    <script src="http://www.infochimps.com/js/libs/dd_belatedpng.js"></script>
+    <script> DD_belatedPNG.fix('img, .png_bg'); //fix any <img> or .png_bg background-images </script>
+  <![endif]--> 
+ 
+</body> 
+</html> 

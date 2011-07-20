@@ -1,0 +1,191 @@
+@import 'mixins';
+
+#main {
+  article.protocols.edit {
+    & > section.left {
+      ul {
+        width: 100%;
+      }
+      width: 650px;
+      section.pane {
+        width: 650px;
+        h1,h2,h3,h4,h5,h6,header {
+          font-family: HelveticaNeueLTStd45Light, "Helvetica Neue", Arial, Helvetica, sans-serif;
+          text-transform: uppercase;
+          color: #aaa;
+          font-weight: bold;
+          font-size: 12px;
+          line-height: 12px;
+        }
+        h3, h5 {
+          text-transform: none;
+          color: #0066cc;
+          font-weight: normal;
+        }
+        h2 {
+          margin-top: 6px;
+          line-height: 22px;
+        }
+        h4 {
+          line-height: 22px;
+          margin-top: 30px;
+          margin-bottom: 0;
+          line-height: 26px;
+        }
+      }
+    }
+  }
+  label {
+    text-transform: uppercase;
+    font-family: HelveticaNeueLTStd45Light, "Helvetica Neue", Arial, Helvetica, sans-serif;
+    color: #aaa;
+    display: block;
+    font-size: 12px;
+    line-height: 26px;
+    margin-top: 24px;
+    &:first-of-type {
+      margin-top: 0px;
+    }
+    input, textarea, select {
+      clear: both;
+      display: block;
+      margin: 0;
+      outline: 0;
+    }
+    input,textarea {
+      color: #333;
+      padding: 13px 10px;
+      border: solid 1px #dcdcdc;
+      @include rounded;
+      background-color: #fff;
+      &:not(.markItUpEditor){
+        @include inner_shadow;
+      }
+    }
+    textarea{
+      resize: vertical;
+    }
+  }
+  
+  h2 .new, h4 .new {
+    line-height: 10px;
+    float: right;
+    @include button(#fff, 5px, 12px, 4px, 10px, 1);
+    cursor: pointer;
+    color: #333;
+    text-transform: none;
+  }
+
+  section.expandable.collapsed {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    background-image: url('/images/collapsed.png');
+    & > *{
+      display: none;
+    }
+    .expandable-handle {
+      display: block;
+      margin-bottom: 0px;
+      margin-right: -30px;
+    }
+  }
+
+  section.expandable {
+    background: #f5f5f5;
+    border: 1px solid #dcdcdc;
+    border-width: 1px 1px 0px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    background-image: url('/images/expanded.png');
+    background-position: 98% 15px;
+    background-repeat: no-repeat;
+    .expandable-handle {
+      margin-bottom: 10px;
+      margin-left: -30px;
+      margin-right: -30px;
+      font-size: 12px;
+      padding: 10px;
+      cursor: pointer;
+      height: 12px;
+      background: transparent url('/images/drag.png') no-repeat 12px 12px;
+      text-indent: 22px;
+    }
+    &:nth-child(odd) {
+      background-color: #fff;
+    }
+    &:last-child {
+      border-bottom-width: 1px;
+    }
+  }
+  section.left {
+    footer {
+      text-align: right;
+      line-height: 30px;
+      a {
+        display: inline-block;
+        margin: 20px 4px 20px 0px;
+      }
+      input[type=submit] {
+        display: inline-block;
+        width: auto !important;
+        clear: both;
+        margin: 20px 0px 20px 8px;
+        @include button(#0093ee, 5px, 16px, 4px, 13px);
+      }
+    }
+    .markItup {
+      width: 650px;
+    }
+    .markItUpContainer {
+      textarea.markItUpEditor, &>.preview {
+        width: 628px;
+        height: 250px;
+      }
+    }
+    textarea, input {
+      width: 628px;
+    }
+    textarea {
+      height: 250px;
+    }
+  }
+
+  section.type, section.message {
+    padding: 0px 30px 30px;
+    .markItUp{
+      width: 590px;
+    }
+    .markItUpContainer {
+      textarea.markItUpEditor, &>.preview {
+        width: 568px;   
+        height: 100px;    
+      }
+    }
+    textarea, input {
+      width: 568px;
+    }
+    textarea {
+      height: 100px;
+    }
+  }
+  section.field {
+    background-color: #efefef;
+    border-color: #ccc;
+    width: 527px;
+    padding: 0px 30px 30px;
+    &:nth-child(odd){
+      background-color: #fff;
+    }
+    .markItUp{
+      width: 525px;
+    }
+    .markItUpContainer {
+      textarea.markItUpEditor, &>.preview {
+        width: 505px;       
+      }
+    }
+    textarea, input {
+      width: 505px;
+    }
+  }
+}

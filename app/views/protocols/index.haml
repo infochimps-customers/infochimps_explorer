@@ -1,0 +1,9 @@
+%h1 Apeyeye Management Console
+
+%table
+  - @protocols.sort.each do |ps_name, protocol|
+    - protocol.messages.sort_by{|nm, msg| msg.path }.each do |msg_name, message|
+      %tr
+        %th= "/"+protocol.path
+        %td.name=link_to(protocol.name, edit_protocol_path(protocol.path))
+        %td.query ?#{message.query_string}
