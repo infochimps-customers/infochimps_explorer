@@ -7,7 +7,6 @@ gem "icss", :git => "https://github.com/infochimps/icss.git"
 gem "jquery-rails", "~> 1.0.12"
 gem "RedCloth", "~> 4.2.7"
 gem "haml", "~> 3.1.2"
-gem "sass", "~> 3.1.4"
 gem "devise"
 
 
@@ -16,4 +15,18 @@ gem "devise"
 group :development do
   gem "bundler",     "~> 1.0.12"
   gem "ruby-debug19", :require => "ruby-debug"
+  gem "looksee"
+  gem "awesome_print"
+  gem "sass", "~> 3.1.4"
+end
+
+group :test do
+  gem "rspec-rails"
+  gem "capybara"
+  gem "launchy"
+  gem 'machinist'
+  gem 'forgery'
+  gem 'database_cleaner'
+  # gem 'ZenTest'
+  # gem 'capybara-webkit', '1.0.0.beta4'
 end
