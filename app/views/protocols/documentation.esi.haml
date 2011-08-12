@@ -1,23 +1,26 @@
-.doc= textilize(@icss.doc)
+Check out our #{link_to "Quickstart Tutorial", '/apis/tutorial'} and #{link_to "Code Examples", '/apis/code-examples'}, or peruse the documentation specific to this API below.
+%br
+%br
+.doc=textilize_with_sanitize(@icss.doc)
 
-- @icss.messages.each do |message_name, message| 
+-@icss.messages.each do |message_name, message| 
 
   .message.niceform-fake{ :id => "message-#{message.name}" }
-    %h2== #{h message.name} API Call
+    %h2== #{message.name} API Call
 
     %blockquote.sample_url== <span>GET<span> <code>#{h message.api_url}</code>
 
     %h3 Parameters
 
     .parameters
-      = render_partial :partial => 'icss_record', :locals => {:record => message.request.first.type, :expand_referenced_types => true }
+      =render :partial => '/protocols/icss_record', :locals => {:record => message.request.first.type, :expand_referenced_types => true }
 
     %h3 Response
 
     .response
-      = render_partial :partial => 'icss_record', :locals => {:record => message.response, :expand_referenced_types => true } 
+      =render :partial => '/protocols/icss_record', :locals => {:record => message.response, :expand_referenced_types => true } 
 
-    .message= textilize(message.doc)
+    .message=textilize_with_sanitize(message.doc)
 
 %hr/
 
@@ -26,7 +29,7 @@
 - @icss.types.each do |type|
   .type.niceform-fake
     %h3== #{h type.name}
-    = render_partial :partial => :icss_record, :locals => { :record => type }
+    = render :partial => 'icss_record', :locals => { :record => type }
 
               
 -# Note: this partial is SHARED between george and apey_eye. Please DO NOT
@@ -40,5 +43,5 @@
 -# If this request conflicts with being effective, then a) be effective, b) talk
 -# to flip so he can help find a workaround
 -#    
--# To airlift this into apeyeye: change all occurences of 'render' with 'render_partial'
+-# To airlift this into apeyeye: change all occurences of 'render' with 'render'
 -# (and vice versa in george)

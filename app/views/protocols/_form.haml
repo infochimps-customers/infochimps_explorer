@@ -1,0 +1,100 @@
+%section.panes
+  %section#overview.pane
+    =label_tag 'protocol[protocol]' do
+      %span Protocol
+      -opts = { :disabled => 'disabled' } if params[:action] == 'edit'
+      =text_field_tag 'protocol[protocol]', @icss.name, opts||{}
+    - if params[:action] == 'new'
+      =label_tag 'protocol[namespace]' do
+        %span Namespace
+        =text_field_tag 'protocol[namespace]', @icss.namespace
+    =label_tag 'protocol[doc]' do
+      %span Description
+      =text_area_tag 'protocol[doc]', @icss.doc, :class => 'textile'
+  %section#types.pane
+    %h2
+      Types
+      .new New Type
+      %div{:style=>'clear: both;'}
+    %section
+      - @icss.types.each_with_index do |type, type_index|
+        %section.type.collapsed
+          %h3
+            =type.name
+          - type.to_hash.keys.reject{ |k,v| [:name, :doc, :fields].include?(k) }.each do |key, value|
+            =hidden_field_tag "protocol[types][][#{key}]", type.send(key)
+          =label_tag "protocol[types][#{type_index}][name]" do
+            %span Name
+            =text_field_tag 'protocol[types][][name]', type.name, :id => sanitize_to_id("protocol[types][#{type_index}][name]")
+          =label_tag "protocol[types][#{type_index}][doc]" do 
+            %span Description
+            =text_area_tag 'protocol[types][][doc]', type.doc, :id => sanitize_to_id("protocol[types][#{type_index}][doc]"), :class => 'textile reduced'
+          %section.fields
+            %h4
+              Fields
+              .new New Field
+              %div{:style=>'clear: both;'}
+            %section
+              - type.fields.each_with_index do |field, field_index|
+                %section.field.collapsed
+                  %h5=field.name
+                  - field.to_hash.keys.reject{ |k,v| [:name, :type, :doc].include?(k) }.each do |key, value|
+                    =hidden_field_tag "protocol[types][]fields[][#{key}]", field.send(key)
+                  =label_tag "protocol[types][#{type_index}][fields][#{field_index}][name]" do 
+                    %span Name
+                    =text_field_tag 'protocol[types][][fields][][name]', field.name, :id => sanitize_to_id("protocol[types][#{type_index}][fields][#{field_index}][name]")
+                  =label_tag "protocol[types][#{type_index}][fields][#{field_index}][type]" do 
+                    %span Type
+                    - field_type = field.type
+                    - field_type_name = 'protocol[types][][fields][][type]'
+                    - closing_divs = ''
+                    - while field_type.respond_to?(:type) && field_type.type != :record
+                      =select_tag(field_type_name + '[type]', options_for_select(@types, field_type.type), :id => sanitize_to_id("protocol[types][#{type_index}][fields][#{field_index}][type]"))
+                      <div>
+                      <span>
+                      =(field.type.type == :array ? ' of ' : field_type.type == :fixed ? ' with size ' : ' with ')
+                      </span>
+                      <br />
+                      -field_type_name += (field_type.type == :array ? '[items]' : field_type.type == :fixed ? '[size]' : '[values]')
+                      -field_type = field_type.send(field_type.type == :array ? :items : field_type.type == :fixed ? :size : :values)
+                      -closing_divs += '</div>'
+                    - if field_type.is_a?(Fixnum)
+                      =text_field_tag(field_type_name, field_type)
+                    - else
+                      =select_tag(field_type_name, options_for_select(@types, field_type.name))
+                    =closing_divs.html_safe
+                  =label_tag "protocol[types][#{type_index}][fields][#{field_index}][doc]" do 
+                    %span Description
+                    =text_area_tag 'protocol[types][][fields][][doc]', field.doc, :id => sanitize_to_id("protocol[types][#{type_index}][fields][#{field_index}][doc]"), :class => 'textile reduced'
+  %section#messages.pane
+    %h2
+      Messages
+      .new New Message
+      %div{:style=>'clear: both;'}
+    %section
+      - @icss.messages.values.each_with_index do |message, msg_index|
+        %section.message.collapsed
+          %h3=message.name
+          - message.to_hash.keys.reject{ |k,v| [:name, :doc, :request, :response, :samples].include?(k) }.each do |key, value|
+            =hidden_field_tag "protocol[messages][][#{key}]", message.send(key)
+          =label_tag "protocol[messages][#{msg_index}][name]" do
+            %span Name
+            =text_field_tag 'protocol[messages][][name]', message.name, :id => sanitize_to_id("protocol[messages][#{msg_index}][name]")
+          =label_tag "protocol[messages][#{msg_index}][doc]" do
+            %span Description
+            =text_area_tag 'protocol[messages][][doc]', message.doc, :id => sanitize_to_id("protocol[messages][#{msg_index}][doc]"), :class => 'textile reduced'
+          =label_tag "protocol[messages][#{msg_index}][request][][type]" do
+            %span Request
+            =select_tag('protocol[messages][][request][][type]', options_for_select(@types, message.request.first.name), :id => sanitize_to_id("protocol[messages][#{msg_index}][request][][type]"))
+          =label_tag "protocol[messages][#{msg_index}][response]" do
+            %span Response
+            =select_tag('protocol[messages][][response]', options_for_select(@types, message.response.name), :id => sanitize_to_id("protocol[messages][#{msg_index}][response]"))
+          =label_tag "protocol[messages][#{msg_index}][samples][]" do
+            %span Sample
+            =text_area_tag 'protocol[messages][][samples][]', (message.samples.shift.to_hash.stringify_keys.to_json rescue ''), :id => sanitize_to_id("protocol[messages][#{msg_index}][samples][]")
+            - message.samples.each do |sample|
+              =hidden_field_tag 'protocol[messages][][samples][]', sample.to_hash.stringify_keys.to_json
+%footer
+  %a{:href => '/protocols' } Discard
+  or 
+  =submit_tag

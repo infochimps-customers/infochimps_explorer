@@ -1,64 +1,99 @@
-## OS
-.DS_Store
-Icon?
-nohup.out
-.bak
+#
+# Rails specific ignores
+#
 
-## EDITORS
-\#*
-.#*
-*~
-*.swp
-REVISION
-TAGS*
-tmtags
-*_flymake.*
-*_flymake
-*.tmproj
-.project
-.settings
-mkmf.log
+# config
+/config/*.sphinx.conf
+/config/database.yml
+/config/sphinx.yml
+/config/george.yml
+/config/cucumber.yml
+/config/george.ru
+/config/elastic_search.yml
+/config/nginx.conf
+/config/ssl/*
+/config/vanity.yml
+/config/varnish.vcl
+/config/yellowhat.nginx.conf
 
-## COMPILED
-a.out
-*.o
-*.pyc
-*.so
+# public
+public/sitemaps/*
+/public/stylesheets/compiled/*
+/public/cached/all.*
 
-## OTHER SCM
+# database
+/db/*.sqlite3
+/db/sphinx
+/db/schema.rb
+dump.rdb
+db/snapshots/*
+db/imports/packages/*
+
+# docs
+.yardoc
+
+# vendor
+.bundle
+/vendor/src/**/*
+
+#
+# Non-Rails specific ignores
+# 
+
+# source control
 .bzr
 .hg
 .svn
 
-## PROJECT::GENERAL
-coverage
-rdoc
-doc
-pkg
-.yardoc
-*private.yaml
-.bundle
-db/*.sqlite3
-log/*.log*
-tmp/**/*
-config/database.yml
-public/stylesheets/compiled/*
-public/system/*
+# builds
+a.out
+*.o
+*.pyc
+*.so
+*.stackdump
+*.sw?
 
-## PROJECT::SPECIFIC
-public/stylesheets/style.css
-public/stylesheets/handheld.css
+# editors
+*.tmproj
+*_flymake.*
+.project
+.pydevproject
+.settings
+.tasks-cache
+.rvmrc.*
 
-vendor/gems
-vendor/bin
-.bundle
+# typical
+/**/*DONTVERSION*
+/**/*private*
+/**/cache/*
+/log/*
+/tmp/*
+/**/log/*
+/**/tmp/*
+/coverage
+/doc/*
+/pkg/*
+/rdoc/*
+
+# misc
+\#*
+.\#*
+*~
+._*
+.DS_Store
+Icon?
+REVISION
+TAGS*
+nohup.out
+.rvmrc
+pkg/*
 .sass-cache
-vendor/goliath
 
-# gitignor'ing these files which you may happen to link in rather than gem
-lib/goliath
-lib/goliath.rb
-lib/icss
-lib/icss.rb
+vendor/plugins/rails_upgrade
+# For local dev environment w/ Foreman
+Procfile
+
+config/certs/*
 
 .vendor
+.bundle

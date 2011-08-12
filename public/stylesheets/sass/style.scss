@@ -1,7 +1,17 @@
 @import 'mixins';
 
 #main {
-  article.protocols.edit {
+  font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+  section.left {
+    width: 650px;
+    ul {
+      width: 100%;
+    }
+    section.pane {
+      width: 650px;
+    }
+  }
+  article.protocols.edit, article.protocols.new {
     & > section.left {
       ul {
         width: 100%;
@@ -10,7 +20,7 @@
       section.pane {
         width: 650px;
         h1,h2,h3,h4,h5,h6,header {
-          font-family: HelveticaNeueLTStd45Light, "Helvetica Neue", Arial, Helvetica, sans-serif;
+          font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
           text-transform: uppercase;
           color: #aaa;
           font-weight: bold;
@@ -36,15 +46,17 @@
     }
   }
   label {
-    text-transform: uppercase;
-    font-family: HelveticaNeueLTStd45Light, "Helvetica Neue", Arial, Helvetica, sans-serif;
-    color: #aaa;
     display: block;
-    font-size: 12px;
-    line-height: 26px;
     margin-top: 24px;
     &:first-of-type {
       margin-top: 0px;
+    }
+    span {
+      text-transform: uppercase;
+      font-family: HelveticaNeueLTStd45Light, "Helvetica Neue", Arial, Helvetica, sans-serif;
+      color: #aaa;
+      font-size: 12px;
+      line-height: 26px;
     }
     input, textarea, select {
       clear: both;
@@ -71,6 +83,7 @@
     line-height: 10px;
     float: right;
     @include button(#fff, 5px, 12px, 4px, 10px, 1);
+    text-shadow: none;
     cursor: pointer;
     color: #333;
     text-transform: none;
@@ -181,11 +194,11 @@
     }
     .markItUpContainer {
       textarea.markItUpEditor, &>.preview {
-        width: 505px;       
+        width: 503px;       
       }
     }
     textarea, input {
-      width: 505px;
+      width: 503px;
     }
   }
 }

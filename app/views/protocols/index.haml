@@ -5,5 +5,6 @@
     - protocol.messages.sort_by{|nm, msg| msg.path }.each do |msg_name, message|
       %tr
         %th= "/"+protocol.path
-        %td.name=link_to(protocol.name, edit_protocol_path(protocol.path))
+        - url_method = (params[:layoutless] == true ? :edit_layoutless_protocol_path : :edit_protocol_path)
+        %td.name=link_to(protocol.name, send(url_method, protocol.path))
         %td.query ?#{message.query_string}

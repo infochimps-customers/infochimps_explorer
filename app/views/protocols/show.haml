@@ -1,0 +1,18 @@
+-title(@icss.targets["catalog"].first.title)
+%nav
+  %ul.tabs
+    %li
+      %a{ :href => '#overview' } Overview
+    %li
+      %a{ :href => '#explorer' } API Explorer
+    %li
+      %a{ :href => '#documentation' } API Documentation
+%section.panes
+  %section#overview.pane
+    =textilize(@icss.targets["catalog"].first.description).html_safe
+  %section#explorer.pane
+    %h1 API Explorer
+    =render 'explorer'
+  %section#documentation.pane
+    %h1 API Documentation
+    =render 'documentation'

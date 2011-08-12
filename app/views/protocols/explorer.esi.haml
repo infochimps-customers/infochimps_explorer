@@ -1,0 +1,51 @@
+=stylesheet_link_tag api_explorer_url("/stylesheets/api_explorer.css")
+-api_call = @dataset.api_call
+.api-call.span-18.last[api_call]
+  .api-request
+    %form{:action => h(api_call.link), :method => api_call.verb, :class => 'niceform-fake'}
+      .request-url-container.clearfix
+        =text_area_tag :url, api_call.link, :class => 'request-url span-15', :id => nil
+        %span.verb=api_call.verb.upcase
+      .request-doc
+        -if api_call.link =~ /api\.infochimps\.com/
+          =label_tag :apikey, :class => 'clearfix' do
+            .name apikey
+            =text_field_tag 'apikey', user_apikey_or_default, :id => nil
+            -if User.has_query_apikey?
+              .doc This is your Query API key.  Don't share it!
+            -else
+              .doc This is a public key.  #{link_to 'Sign up', george_url(signup_path)} for your own personal key for higher rate limits and bonus features!
+        -samples = @dataset.samples 
+        -api_call.request['fields'].each_with_index do |sf, i|
+          -# don't show our internal apikey if it appears here -- we put it in later
+          -next if sf['name'] == 'apikey' && api_call.link =~ /api\.infochimps\.com/
+          =label_tag sf['name'], :class => 'clearfix' do
+            .name
+              -if sf['type'].is_a?(Array)
+                =select_tag('data-field-index', sf['type'].collect{|allowed_type| allowed_type.values.first['name'] unless allowed_type.blank?}.compact)
+              -else
+                =sf['name']
+            -case
+              -when sf['name'] == 'apikey'
+                -value = user_apikey_or_default
+              -when sf['type'].is_a?(Array)
+                -value = sf['type'].first.values.first['default'] rescue nil
+              -else
+                -value = api_call_request_field_default(sf, samples)
+            =text_field_tag sf['name'], value, :id => nil 
+            .doc
+              -if sf['type'].is_a?(Array)
+                -default_type = sf['type'].first
+                -unless default_type.blank?
+                  =api_call_textilize_doc(default_type.values.first['doc'])
+              -else
+                -unless sf['doc'].nil?
+                  =api_call_textilize_doc(sf['doc'])
+        .clearfix
+        .nicebuttons
+          %input{:type => 'submit', :class => "api-explorer-submit"}
+      .response{"data-show-visualization" => ('true' if active_feature?(:geo_visualization) && @dataset.is_a_geo?) }
+
+.response-doc
+  %h2 Response Documentation
+  -api_call_response_documentation(api_call);

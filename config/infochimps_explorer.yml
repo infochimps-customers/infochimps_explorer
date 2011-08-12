@@ -1,0 +1,24 @@
+---
+
+:session:
+  :key: infochimps_session
+  :secret: 7cec67ffe0535f4362412ce4b7f61157627d66ff104263bb08e6f145931036b2753ab7e2a1d280921e6e13766461b63c310d839c6d4dcf30fc3fddb121e13afd
+  :domain: lvh.me
+
+:default_api_key: OoDexaith0oheshainae69
+
+:host: lvh.me
+:beer_goggles_host: beer-goggles.lvh.me
+:api_explorer_host: api-explorer.lvh.me
+:alphamale_host: alphamale.lvh.me
+
+:feature_flag:
+  :stemming: true
+  :highlighting: true
+  :didyoumean: true
+  :track_pageviews_in_broham: true
+  :search_test: true
+  :app_gallery: true
+  :geo_visualization: true
+  :faceted_search: true
+  :related_datasets: true

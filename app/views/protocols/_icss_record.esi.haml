@@ -1,0 +1,18 @@
+- expand_referenced_types ||= false
+.record{ :id => "type-#{record.name}" }
+  
+  %p.description
+    =textilize_with_sanitize(record.doc)
+
+  %ul.fields
+    - record.fields.each do |field|
+      %li
+        %p
+          %code.bold
+            =field.name 
+          (<code>#{reference_to_type(field.type)}</code>)
+        .doc= textilize_with_sanitize(field.doc)
+        %blockquote.fields
+          - if ((expand_referenced_types) || (! field.is_reference?))
+            -if field.record?
+              = render :partial => 'icss_record', :locals => { :record => field.type }

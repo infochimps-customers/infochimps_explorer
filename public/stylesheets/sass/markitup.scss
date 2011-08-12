@@ -10,7 +10,7 @@
   .markItUpHeader * {
   	margin:0px; border: 0; padding: 0px;
   }
-  .markItUp a:link, .markItUp a:visited {
+  .markItUp :not(div.preview) a:link, .markItUp :not(div.preview) a:visited {
   	color:#000;
   	text-decoration:none;
   }
@@ -22,48 +22,20 @@
     @include rounded;
     border: solid 1px #dcdcdc;
     &>.preview {
-      color: #333;
-      font-weight: normal;
       padding: 13px 10px;
-      font-size: 14px;
-      text-transform:none;
       height: 250px;
       border: solid 1px #dcdcdc;
       overflow: auto;
-      a {
-        color: #00f;
-      }
-      table {
-        width: auto;
-        border-collapse: separate;
-        border: 1px solid black;
-        td {
-          border: 1px solid black;
-        }
-      }
-      /*h1, h2, h3, h4 {
-        font-size: 24px !important;
-        color: #333 !important;
-        text-transform: none !important;
-        font-weight: bold !important;
-      }*/
-      h2 {
-        font-size: 20px !important;
-      }
-      h3 {
-        font-size: 16px !important;
-      }
-      h4 {
-        font-size: 14px !important;
-      }
       ul, li {
         width: auto !important;
       }
     }
     textarea.markItUpEditor, &>.preview {
+      cursor: default;
       background: #fff;
       border: solid 1px #dcdcdc;
       border-width: 1px 0px 0px 0px;
+      font-weight: normal;
       margin: 0;
       @include rounded;
       @include rounded('top-right', 0px);    

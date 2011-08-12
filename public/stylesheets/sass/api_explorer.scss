@@ -1,0 +1,84 @@
+@import 'mixins';
+
+.api-request {
+  input[type=text], textarea {
+    border: 1px solid #d9d9d9;
+    color: #666;
+    outline: 0px;
+    @include inner_shadow;
+    @include rounded; 
+    margin: 0;
+  }
+  form {
+    background: #eaeae3;
+    @include rounded(7px);
+    padding: 15px;
+  }
+  .request-url-container {
+    position: relative;
+    margin-bottom: 18px;
+    textarea {
+      padding: 7px 27px 6px 73px;
+      height: 42px;
+      font-size: 14px;
+      line-height: 20px;
+      resize: vertical;
+    }
+    span.verb {
+      @include rounded('all', 5px);
+      position: absolute;
+      display: block;
+      width: 50px;
+      color: white;
+      @include bg_gradient(#888683, #6b6966);
+      border: 1px solid #666;
+      font-size: 13px;
+      line-height: 31px;
+      font-weight: bold;
+      text-align: center;
+      top: 12px;
+      left: 12px;
+    }
+  }
+  label {
+    vertical-align: top;
+    display: block;
+    margin-bottom: 18px;
+    clear: both;
+  }
+  .name, .doc, input[type=text], select {
+    float: left;
+    margin: 0;
+    margin-left: 15px;
+    padding: 8px;
+    font-size: 13px;
+    color: #666;
+  }
+  .name {
+    width: 130px;
+    color: #444;
+  }
+  .doc{
+    width: 320px;
+    padding-top: 9px;
+    font-weight: normal;
+    p {
+      margin: 0;
+    }
+  }
+  input[type=submit] {
+    margin-left: 161px;
+  }
+  input[type=text], select {
+    margin: 0;
+    clear: none;
+    display: block;
+    width: 150px;
+  }
+  select{
+    width: 168px;
+  }
+}
+.api-call .api-request .response pre {
+  white-space: pre;
+}

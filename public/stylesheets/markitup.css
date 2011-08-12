@@ -5,7 +5,7 @@
     margin: 0px;
     border: 0;
     padding: 0px; }
-  #main .markItUp a:link, #main .markItUp a:visited {
+  #main .markItUp :not(div.preview) a:link, #main .markItUp :not(div.preview) a:visited {
     color: #000;
     text-decoration: none; }
   #main .markItUpEditor {
@@ -16,40 +16,18 @@
     -webkit-border-radius: 5px;
     border: solid 1px #dcdcdc; }
     #main .markItUpContainer > .preview {
-      color: #333;
-      font-weight: normal;
       padding: 13px 10px;
-      font-size: 14px;
-      text-transform: none;
       height: 250px;
       border: solid 1px #dcdcdc;
-      overflow: auto;
-      /*h1, h2, h3, h4 {
-        font-size: 24px !important;
-        color: #333 !important;
-        text-transform: none !important;
-        font-weight: bold !important;
-      }*/ }
-      #main .markItUpContainer > .preview a {
-        color: #00f; }
-      #main .markItUpContainer > .preview table {
-        width: auto;
-        border-collapse: separate;
-        border: 1px solid black; }
-        #main .markItUpContainer > .preview table td {
-          border: 1px solid black; }
-      #main .markItUpContainer > .preview h2 {
-        font-size: 20px !important; }
-      #main .markItUpContainer > .preview h3 {
-        font-size: 16px !important; }
-      #main .markItUpContainer > .preview h4 {
-        font-size: 14px !important; }
+      overflow: auto; }
       #main .markItUpContainer > .preview ul, #main .markItUpContainer > .preview li {
         width: auto !important; }
     #main .markItUpContainer textarea.markItUpEditor, #main .markItUpContainer > .preview {
+      cursor: default;
       background: #fff;
       border: solid 1px #dcdcdc;
       border-width: 1px 0px 0px 0px;
+      font-weight: normal;
       margin: 0;
       border-radius: 5px;
       -moz-border-radius: 5px;

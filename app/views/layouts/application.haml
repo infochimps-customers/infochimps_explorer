@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+%html{ "xml:lang" => "en", :lang => "en", :xmlns => "http://www.w3.org/1999/xhtml" }
+  %head
+    %title=@content_for_title
+    %link{:href => "/shared/javascripts/lib/jquery.ui/stylesheets/jquery-ui.custom.css", :type => "text/css", :media => "screen", :rel => "stylesheet"}
+    %link{:href => "/shared/stylesheets/common.css", :type => "text/css", :media => "screen", :rel => "stylesheet"}
+    %link{:href => "/stylesheets/style.css", :type => "text/css", :media => "screen", :rel => "stylesheet"}
+    %link{:href => "/stylesheets/markitup.css", :type => "text/css", :media => "screen", :rel => "stylesheet"}
+    %link{:href => "/stylesheets/markitup/sets/textile/style.css", :type => "text/css", :media => "screen", :rel => "stylesheet"}
+    =csrf_meta_tag
+  %body
+    #outer-container
+      %header
+        .container
+          #logo
+            %a{:href => "/"}=image_tag("/shared/images/infochimps-logo-b.png", :alt => "Infochimps Logo")
+          =ssi_tag("/_george/current_user_fragment.esi")
+          %nav
+      #container
+        %header
+          .container
+            #page-header
+              %h1.span-16=@content_for_title
+        #main.container
+          -if flash[:notice]
+            #flash_notice.notice
+              %p=flash.delete(:notice)
+          -# devise uses :alert, not :error
+          -if (flash[:error]  || flash[:alert])
+            #flash_error.error
+              -if flash[:error]
+                %p=flash.delete(:error)
+              -if flash[:alert]
+                %p=flash.delete(:alert)
+        
+          %article{:class => [params[:controller], params[:action]]}
+            %section.left
+              =yield
+    
+    %script{:src => "/shared/javascripts/lib/jquery.min.js", :type => "text/javascript"}
+    %script{:src => "/shared/javascripts/lib/jquery.ui/jquery.ui.core.min.js", :type => "text/javascript"}
+    %script{:src => "/shared/javascripts/lib/jquery.ui/jquery.ui.widget.min.js", :type => "text/javascript"}
+    %script{:src => "/shared/javascripts/lib/jquery.ui/jquery.ui.mouse.min.js", :type => "text/javascript"}
+    %script{:src => "/shared/javascripts/lib/jquery.ui/jquery.ui.position.min.js", :type => "text/javascript"}
+    %script{:src => "/shared/javascripts/lib/jquery.ui/jquery.ui.autocomplete.min.js", :type => "text/javascript"}
+    %script{:src => "http://www.infochimps.com/javascripts/lib/jquery.tools/tabs.min.js", :type => "text/javascript"}
+    %script{:src => "/javascripts/application.js", :type => "text/javascript"}
+    =yield :additional_javascripts
+
+

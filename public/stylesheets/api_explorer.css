@@ -1,0 +1,78 @@
+.api-request input[type=text], .api-request textarea {
+  border: 1px solid #d9d9d9;
+  color: #666;
+  outline: 0px;
+  -moz-box-shadow: inset 0px 1px 3px 1px #e3e3e3;
+  -webkit-box-shadow: inset 0px 1px 3px 1px #e3e3e3;
+  box-shadow: inset 0px 1px 3px 1px #e3e3e3;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  margin: 0; }
+.api-request form {
+  background: #eaeae3;
+  border-7px-radius: 5px;
+  -moz-border-radius-: 5px;
+  -webkit-border-7px-radius: 5px;
+  padding: 15px; }
+.api-request .request-url-container {
+  position: relative;
+  margin-bottom: 18px; }
+  .api-request .request-url-container textarea {
+    padding: 7px 27px 6px 73px;
+    height: 42px;
+    font-size: 14px;
+    line-height: 20px;
+    resize: vertical; }
+  .api-request .request-url-container span.verb {
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    position: absolute;
+    display: block;
+    width: 50px;
+    color: white;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #888683), color-stop(100%, #6b6966));
+    background-image: -moz-linear-gradient(top, #888683, #6b6966);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#888683, endColorstr=#6b6966);
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#888683, endColorstr=#6b6966)";
+    border: 1px solid #666;
+    font-size: 13px;
+    line-height: 31px;
+    font-weight: bold;
+    text-align: center;
+    top: 12px;
+    left: 12px; }
+.api-request label {
+  vertical-align: top;
+  display: block;
+  margin-bottom: 18px;
+  clear: both; }
+.api-request .name, .api-request .doc, .api-request input[type=text], .api-request select {
+  float: left;
+  margin: 0;
+  margin-left: 15px;
+  padding: 8px;
+  font-size: 13px;
+  color: #666; }
+.api-request .name {
+  width: 130px;
+  color: #444; }
+.api-request .doc {
+  width: 320px;
+  padding-top: 9px;
+  font-weight: normal; }
+  .api-request .doc p {
+    margin: 0; }
+.api-request input[type=submit] {
+  margin-left: 161px; }
+.api-request input[type=text], .api-request select {
+  margin: 0;
+  clear: none;
+  display: block;
+  width: 150px; }
+.api-request select {
+  width: 168px; }
+
+.api-call .api-request .response pre {
+  white-space: pre; }

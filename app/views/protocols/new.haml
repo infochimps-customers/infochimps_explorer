@@ -7,12 +7,10 @@
       %a{ :href => '#types' } Types
     %li
       %a{ :href => '#messages' } Messages
-=form_tag protocol_path(params[:id]), :method => :put do
+=form_tag protocols_url do
   =render :partial => "form"
   
 -content_for :additional_javascripts do 
   %script{:src => "/shared/javascripts/lib/jquery.ui/jquery.ui.sortable.min.js", :type => "text/javascript"}
   %script{:src => "/javascripts/jquery.markitup.js", :type => "text/javascript"}
   %script{:src => "/javascripts/markitup/textile-set.js", :type => "text/javascript"}
-  =javascript_tag do
-    $(function(){ initialize_icss_editor(); });
